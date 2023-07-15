@@ -1,0 +1,29 @@
+name: emotion_diary
+description: A new Flutter project.
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.0.5 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  intl: ^0.18.1
+  table_calendar: ^3.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+
+fonts:
+  - family: bookk
+    fonts:
+      - asset: assets/fonts/bookk_thin.ttf
+        weight: 400
+      - asset: assets/fonts/bookk_thick.ttf
+        weight: 700
