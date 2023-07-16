@@ -1,6 +1,6 @@
 import 'package:emotion_diary/emoticon_face.dart';
 import 'package:emotion_diary/main_page.dart';
-import 'package:emotion_diary/history_page.dart';
+import 'package:emotion_diary/calendar_page.dart';
 import 'package:emotion_diary/writing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
     // m,
     CalendarPage(),
     // Text("ghhh"),
-    WritingPage(),
+    WritingPage()
   ];
 
   void _onItemSelected(int index) {

@@ -23,18 +23,23 @@ class _MainPageState extends State<MainPage> {
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14,
                               );
-    var happyEmoticon = Column(
-                          children: [
-                            EmoticonFace(
-                              emoticonface: '😆'
-                            ),
-                            SizedBox(height: 8,),
-                            Text(
-                              "좋아요",
-                              style: emoticonText,
-                            ),
-                          ],
-                        );
+    var happyEmoticon = GestureDetector(
+      onTap:() {
+        print("pushed happy");
+      },
+      child: Column(
+        children: [
+          EmoticonFace(
+            emoticonface: '😆'
+          ),
+          SizedBox(height: 8,),
+          Text(
+            "좋아요",
+            style: emoticonText,
+          ),
+        ],
+      ),
+    );
     var sadEmoticon = Column(
                           children: [
                             EmoticonFace(
@@ -99,7 +104,7 @@ class _MainPageState extends State<MainPage> {
                             children: [
                               greetingTextMaker("$name님"),
                             ],
-                          ),
+                          ), 
                           SizedBox(
                             height: 20,
                           ),
