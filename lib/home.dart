@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
     // m,
     CalendarPage(),
     // Text("ghhh"),
-    WritingPage()
+    WritingPage(),
   ];
 
   void _onItemSelected(int index) {
