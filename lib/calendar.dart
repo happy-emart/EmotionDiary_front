@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:collection';
 
@@ -26,7 +27,6 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
   );
 
   DateTime focusedDay = DateTime.now();
-
   // @override
   // void initState() {
   //   initializeDateFormatting('ko_KR').then((_) {
@@ -36,16 +36,17 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Event> getEventsForDay([DateTime? day]) {
-      if (day != null) return events[day] ?? [];
-      return events[selectedDay.value] ?? [];
-    }
-
     return Scaffold(
       body: TableCalendar(
-        eventLoader: (day) {
-          return getEventsForDay(day);
-        },
+        shouldFillViewport: true,
+        calendarStyle: CalendarStyle(
+          markerDecoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.onBackground,
+            shape: BoxShape.circle,
+          ),
+          weekendTextStyle: TextStyle(color: Theme.of(context).colorScheme.onBackground),
+        ),
+        eventLoader: getEventsForDay,
         // eventLoader: (day) {
         //   if (day.day%2 == 0) return ['hi'];
         //   return [];
@@ -73,6 +74,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
           });
         },
       ),
+      // ...getEventsForDay(dat)
     );
   }
 }
@@ -100,10 +102,23 @@ Map<DateTime,dynamic> eventSource = {
 
 final events = LinkedHashMap(
   equals: isSameDay,
-)..addAll(eventSource);
+)..addAll(eventSource); 
 
-Event? makelable (int index) {
-  List<Event> events = getEventsForDay();
-  Map map = events. asMap();
-  return map[index];
+List<Event> getEventsForDay(DateTime day) {
+  return events[DateTime.parse(DateFormat('yyyy-MM-dd').format(day))] ?? [];
 }
+
+// Widget _buildMissionContainer (int index) {
+// return Container ( margin: EdgeInsets symmetric (vertical: 5), height: 80, decoration: BoDecoration(
+// color: Colors.white,
+// borderRadiUs: BorderRadius. circular (20)
+// ) , / / BoxDecoration
+// alignment: Alignment.center, - child: Row( mainAxisAlignment: MainAxisAlignment. spaceBetween,
+// children: [
+// Container (
+// //명시적으로text가차지할영역정해주기 width: Get.width*0.6, padding: EdgeInsets.onLyCLettinG)
+// child: Text (controller .missionList [index])
+// ),
+// /Container SizedBox (width: Get.width*0.1),
+// _buildMissitonCompleteBox (index) ,
+// SizedBox(width: Get.width*0.1,)

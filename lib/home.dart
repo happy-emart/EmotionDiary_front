@@ -1,6 +1,7 @@
 import 'package:emotion_diary/emoticon_face.dart';
 import 'package:emotion_diary/main_page.dart';
 import 'package:emotion_diary/history_page.dart';
+import 'package:emotion_diary/writing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:math' as math;
@@ -20,8 +21,9 @@ class _HomeState extends State<Home> {
   static const List<Widget> _widgetOptions = <Widget>[
     MainPage(name: "영욱"),
     // m,
+    CalendarPage(),
+    // Text("ghhh"),
     WritingPage(),
-    Text("ghhh"),
   ];
 
   void _onItemSelected(int index) {

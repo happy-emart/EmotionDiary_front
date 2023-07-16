@@ -103,53 +103,78 @@ class _MainPageState extends State<MainPage> {
                           SizedBox(
                             height: 20,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                    "오늘의 기분은 어때요?",
-                                    style: TextStyle(
-                                      fontFamily: "bookk",
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                              // ,
-                            ]
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          Container(
+                            padding: EdgeInsets.fromLTRB(5, 15, 5, 15),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                width: 1,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              )
+                            ),
+                            child: Column(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(5,0,5,0),
-                                  child: neutralEmoticon,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                          "오늘, 기분이 어때요?",
+                                          style: TextStyle(
+                                            fontFamily: "bookk",
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                    // ,
+                                  ]
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(5,0,5,0),
-                                  child: happyEmoticon,
+                                SizedBox(
+                                  height: 20,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(5,0,5,0),
-                                  child: sadEmoticon,
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(5,0,5,0),
+                                        child: neutralEmoticon,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(5,0,5,0),
+                                        child: happyEmoticon,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(5,0,5,0),
+                                        child: sadEmoticon,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(5,0,5,0),
+                                        child: angryEmoticon,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(5,0,5,0),
+                                        child: scaredEmoticon,
+                                      ),
+                                    ]
+                                  ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(5,0,5,0),
-                                  child: angryEmoticon,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(5,0,5,0),
-                                  child: scaredEmoticon,
-                                ),                              ]
+                              ],
                             ),
                           ),
                           SizedBox(height: 25,),
                           Expanded(
                             child: Container(
+                            //   decoration: BoxDecoration(
+                            //   color: Colors.amber,
+                            // //   borderRadius: BorderRadius.circular(20),
+                            //   border: Border(
+                            //     top: BorderSide(
+                            //       color: Theme.of(context).colorScheme.onPrimary,
+                            //       width: 1,
+                            //     ),
+                            //   )
+                            // ),
                               color: Theme.of(context).colorScheme.background,
                               child: Center(
                                 child: Flexible(
