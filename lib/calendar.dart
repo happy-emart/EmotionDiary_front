@@ -74,7 +74,6 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
           });
         },
       ),
-      // ...getEventsForDay(dat)
     );
   }
 }
