@@ -1,1 +1,3 @@
-# EmotionDiary_front
+# emotion_diary
+
+A new Flutter project.
