@@ -57,9 +57,9 @@ class _WritingPageState extends State<WritingPage> {
               ),
               backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
                 if (selectedButton == buttonNumber) {
-                  return Theme.of(context).colorScheme.background; // 선택된 버튼의 배경색
+                  return Theme.of(context).colorScheme.onPrimary; // 선택된 버튼의 배경색
                 } else {
-                  return Theme.of(context).colorScheme.onPrimary; // 선택되지 않은 버튼의 배경색
+                  return Theme.of(context).colorScheme.background; // 선택되지 않은 버튼의 배경색
                 }
               }),
             ),
@@ -75,7 +75,7 @@ class _WritingPageState extends State<WritingPage> {
         ),
         SizedBox(height: 8,),
         Text(
-          "좋아요",
+          emotionDescription,
           style: emoticonText,
         ),
       ],
@@ -260,7 +260,9 @@ class _WritingPageState extends State<WritingPage> {
                           // send 
                           var body = {
                             // 'id': id,
+                            'emotion': selectedButton,
                             'text': diary,
+                            'weather': selectedButton,
                           };
                           sendDiary(body);
                         },

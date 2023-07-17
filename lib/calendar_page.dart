@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:emotion_diary/calendar.dart';
+import 'package:emotion_diary/widgets/calendar.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({Key? key}) : super(key: key);
@@ -10,7 +10,10 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage> {
   var yearNowString = new DateTime.now().year.toString();
-  
+  DateTime selectedDay = DateTime.now();
+  DateTime focusedDay = DateTime.now();
+  List<Event> eventsForDay = [];
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -50,18 +53,31 @@ class _CalendarPageState extends State<CalendarPage> {
                       // calendar
                       Expanded(
                         child: Container(
-                          child: TableCalendarScreen(),
+                          child: TableCalendarScreen(
+                            selectedDay: selectedDay,
+                            focusedDay: focusedDay,
+                            onDaySelected: (DateTime selectedDay, focusedDay) {
+                              setState(() {
+                                this.selectedDay = selectedDay;
+                                this.focusedDay = focusedDay;
+                                this.eventsForDay = getEventsForDay(selectedDay);
+                              });
+                            },
+                            ),
+                          ),
                         ),
-                      ),
 
                       // diary written on selected day
                       SizedBox(height: 15),
                       Container(
                         height: constraints.maxHeight*0.3,
+                        width: constraints.maxWidth,
+                        alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.onPrimary,
                           borderRadius: BorderRadius.circular(12),
                         ),
+                        child: Text(eventsForDay.toString()),
                       ),
                     ],
                   ),

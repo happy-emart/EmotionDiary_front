@@ -25,101 +25,11 @@ class _MainPageState extends State<MainPage> {
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14,
                               );
-    var neutralEmoticon = InkWell(
-      onTap:() {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => WritingPage(emotion: 1)));
-      },
-      child: Column(
-        children: [
-          EmoticonFace(
-            emoticonface: '🙂'
-          ),
-          SizedBox(height: 8,),
-          Text(
-            "평온해요",
-            style: emoticonText
-          ),
-        ],
-      )
-    );
-    var happyEmoticon = InkWell(
-      onTap:() {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => WritingPage(emotion: 2)));
-      },
-      child: Column(
-        children: [
-          EmoticonFace(
-            emoticonface: '😆'
-          ),
-          SizedBox(height: 8,),
-          Text(
-            "좋아요",
-            style: emoticonText,
-          ),
-        ],
-      ),
-    );
-    var sadEmoticon = InkWell(
-      onTap:() {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => WritingPage(emotion: 3)));
-      },
-      child: Column(
-        children: [
-          EmoticonFace(
-            emoticonface: '😢'
-          ),
-          SizedBox(height: 8,),
-          Text(
-            "슬퍼요",
-            style: emoticonText,
-          ),
-        ],
-      )
-    );
-    var angryEmoticon = InkWell(
-      onTap:() {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => WritingPage(emotion: 4)));
-      },
-      child: Column(
-        children: [
-          EmoticonFace(
-            emoticonface: '😠'
-          ),
-          SizedBox(height: 8,),
-          Text(
-            "화나요",
-            style: emoticonText,
-          ),
-        ],
-      )
-    );
-    var scaredEmoticon = InkWell(
-      onTap:() {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => WritingPage(emotion: 5)));
-      },
-      child: Column(
-        children: [
-          EmoticonFace(
-            emoticonface: '😰'
-          ),
-          SizedBox(height: 8,),
-          Text(
-            "두려워요",
-            style: emoticonText,
-          ),
-        ],
-      )
-    );
+    var neutralEmoticon = buildEmoticonButton(context, emoticonText, '🙂', "평온해요", 1);
+    var happyEmoticon = buildEmoticonButton(context, emoticonText, '😆', "좋아요", 2);
+    var sadEmoticon = buildEmoticonButton(context, emoticonText, '😢', "슬퍼요", 3);
+    var angryEmoticon = buildEmoticonButton(context, emoticonText, '😠', "화나요", 4);
+    var scaredEmoticon = buildEmoticonButton(context, emoticonText, '😰', "두려워요", 5);
     return SafeArea(
             child:
               Column(
@@ -272,6 +182,28 @@ class _MainPageState extends State<MainPage> {
                 ],
               ),
           );
+  }
+
+  InkWell buildEmoticonButton(BuildContext context, TextStyle emoticonText, String emoticon, String emotionDescription, int emotionToInt) {
+    return InkWell(
+    onTap:() {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => WritingPage(emotion: emotionToInt)));
+    },
+    child: Column(
+      children: [
+        EmoticonFace(
+          emoticonface: emoticon
+        ),
+        SizedBox(height: 8,),
+        Text(
+          emotionDescription,
+          style: emoticonText
+        ),
+      ],
+    )
+  );
   }
 }
 

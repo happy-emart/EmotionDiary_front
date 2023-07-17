@@ -1,4 +1,4 @@
-import 'package:emotion_diary/home.dart';
+import 'package:emotion_diary/controller.dart';
 import 'package:emotion_diary/writing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -19,7 +19,7 @@ class MainApp extends StatelessWidget {
         brightness: Brightness.dark,
         // textTheme: TextTheme
       ),
-      home: Home(),
+      home: Controller(),
       // home: WritingPage(),
     );
   }
