@@ -17,13 +17,14 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
+  int _emotionIndex = 0;
 
-  static const List<Widget> _widgetOptions = <Widget>[
+  static List<Widget> _widgetOptions = <Widget>[
     MainPage(name: "영욱"),
     // m,
     CalendarPage(),
     // Text("ghhh"),
-    WritingPage(),
+    WritingPage(emotion: 0,),
   ];
 
   void _onItemSelected(int index) {
