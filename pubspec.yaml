@@ -16,6 +16,14 @@ dependencies:
   shared_preferences: ^2.2.0
   line_icons: ^2.0.3
   wrapped_korean_text: ^0.0.3
+  flutter_inappwebview: ^5.7.2+3
+  animated_login: ^1.7.0
+  mysql1: ^0.20.0
+  mysql_client: ^0.0.27
+  sqflite: ^2.2.8
+  json_annotation: ^4.8.1
+  json_serializable: ^6.7.1
+  flutter_web_auth: ^0.5.0
 
 dev_dependencies:
   flutter_test:
@@ -24,11 +32,19 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+  - assets/images/
+  - assets/fonts/
+
 
 fonts:
   - family: bookk
     fonts:
-      - asset: assets/fonts/bookk_thin.ttf
+      - asset: assets/fonts/bookk/bookk_thin.ttf
         weight: 400
-      - asset: assets/fonts/bookk_thick.ttf
+      - asset: assets/fonts/bookk/bookk_thick.ttf
         weight: 700
+  - family: mainfont
+    fonts:
+      - asset: assets/fonts/mainfont.ttf
+

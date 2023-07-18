@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:emotion_diary/main.dart';
+import 'package:emotion_diary/main_wait.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

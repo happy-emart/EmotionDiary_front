@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:convert';
-import 'emoticon_face.dart';
-import 'weather_radio.dart';
+import 'widgets/emoticon_face.dart';
+import 'widgets/weather_radio.dart';
 import 'package:http/http.dart' as http;
 
 String globalUrl = "http://localhost";
+String flaskUrl = "http://172.10.9.25:443/";
 
 class WritingPage extends StatefulWidget {
   int emotion;
@@ -256,7 +257,7 @@ class _WritingPageState extends State<WritingPage> {
                           var body = {
                             // 'id': id,
                             'emotion': selectedButton,
-                            'text': diary,
+                            'diaryText': diary,
                             'weather': selectedButton,
                           };
                           sendDiary(body);
@@ -357,21 +358,27 @@ class EmotionButtonScroll extends StatelessWidget {
 }
 
 void sendDiary(Map<String, dynamic> body) async {
-  String Url = "$globalUrl/sent_letters";
+  // String Url = "$globalUrl/sent_letters";
+  String Url = flaskUrl;
+  
   final request = Uri.parse(Url);
   // final jwtToken = await getJwtToken();
   // final headers = <String, String> {
   //   'Content-Type': 'application/json; charset=UTF-8',
   //   'Authorization': 'Bearer $jwtToken'
   // };
+  final headers = <String, String> {
+    'Content-Type': 'application/json; charset=UTF-8',
+  };
   try
     {
-      // final response = await http.post(request, headers: headers, body: json.encode(body));
-      // print(response.body);
+      final response = await http.post(request, headers: headers, body: json.encode(body));
+      print(json.encode(body));
+      print(response.body);
     }
     catch(error)
     {
-      // print('error : $error');
+      print('error : $error');
     }
   }
 

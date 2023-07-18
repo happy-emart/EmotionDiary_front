@@ -13,7 +13,7 @@ class _CalendarPageState extends State<CalendarPage> {
   var yearNowString = new DateTime.now().year.toString();
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
-  Diary eventsForDay = Diary(emotion: 1, weather: 1, diaryText: "");
+  Diary? eventsForDay;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,7 @@ class _CalendarPageState extends State<CalendarPage> {
                               setState(() {
                                 this.selectedDay = selectedDay;
                                 this.focusedDay = focusedDay;
-                                this.eventsForDay = getEventsForDay(selectedDay).isNotEmpty ? getEventsForDay(selectedDay)[0] : Diary(emotion: 100, weather: 100, diaryText: "일기를 쓰지 않은 날입니다.");
+                                this.eventsForDay = getEventsForDay(selectedDay).isNotEmpty ? getEventsForDay(selectedDay)[0] : Diary(emotion: 100, weather: 100, diaryText: "일기를 쓰지 않은 날입니다.", writtenDate: "01/01/2001");
                                 }
                               );
                             },
@@ -71,20 +71,25 @@ class _CalendarPageState extends State<CalendarPage> {
 
                       // diary written on selected day
                       SizedBox(height: 15),
-                      Container(
-                        height: constraints.maxHeight*0.3,
-                        width: constraints.maxWidth,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Column(
-                          children: [
-                            Text(eventsForDay.toString()),
-                            Text(eventsForDay.toEmotion()),
-                            Text(eventsForDay.toWeather()),
-                          ],
+                      GestureDetector(
+                        onTap: () {
+                          
+                        },
+                        child: Container(
+                          height: constraints.maxHeight*0.3,
+                          width: constraints.maxWidth,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(eventsForDay?.toString()??""),
+                              Text(eventsForDay?.toEmotion()??""),
+                              Text(eventsForDay?.toWeather()??""),
+                            ],
+                          ),
                         ),
                       ),
                     ],

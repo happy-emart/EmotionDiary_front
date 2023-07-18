@@ -12,40 +12,40 @@ class AnlaysisPage extends StatefulWidget {
 }
 
 class _AnlaysisPageState extends State<AnlaysisPage> {
-  //   Future<Map<DateTime, dynamic>> getDateEventMap(DateTime date) async {
-  //     서버와 통신해 데이터를 받아온다 -> 일기 데이터와 감정 데이터 부분으로 분리하기
-  //     final String Url = "$baseUrl/written_diary";
-  //     final jwtToken = await getJwtToken();
-  //     final request = Uri.parse(Url);
-  //     final headers = <String, String> {
-  //       'Content-Type': 'application/json; charset=UTF-8',
-  //       'Authorization': 'Bearer $jwtToken'
-  //     };
+    // Future<Map<DateTime, dynamic>> getDateEventMap(DateTime date) async {
+    //   서버와 통신해 데이터를 받아온다 -> 일기 데이터와 감정 데이터 부분으로 분리하기
+    //   final String Url = "$baseUrl/written_diary";
+    //   final jwtToken = await getJwtToken();
+    //   final request = Uri.parse(Url);
+    //   final headers = <String, String> {
+    //     'Content-Type': 'application/json; charset=UTF-8',
+    //     'Authorization': 'Bearer $jwtToken'
+    //   };
 
-  //     try
-  //     {
-  //       final response = await http.get(request, headers: headers);
-  //       var json = jsonDecode(response.body);
-  //       List<Letter> letters = [];
-  //       List<Container> containers = [];
-  //       for (var LetterJson in json) {
-  //         print(LetterJson);
-  //         letters.add(Letter.fromJson(LetterJson));
-  //       }
+    //   try
+    //   {
+    //     final response = await http.get(request, headers: headers);
+    //     var json = jsonDecode(response.body);
+    //     List<Letter> letters = [];
+    //     List<Container> containers = [];
+    //     for (var LetterJson in json) {
+    //       print(LetterJson);
+    //       letters.add(Letter.fromJson(LetterJson));
+    //     }
 
-  //       for(var fruit in letters) {
-  //         containers.add(createFruit(context, fruit.posX, fruit.posY, fruit.id, fruit.fruitType));
-  //       }
-  //       return containers;
-  //     }
-  //     catch(error)
-  //     {
-  //       print('error : $error');
-  //     }
-  //     return [];
+    //     for(var fruit in letters) {
+    //       containers.add(createFruit(context, fruit.posX, fruit.posY, fruit.id, fruit.fruitType));
+    //     }
+    //     return containers;
+    //   }
+    //   catch(error)
+    //   {
+    //     print('error : $error');
+    //   }
+    //   return [];
 
-  //     // return ;
-  //   }
+    //   // return ;
+    // }
 
   @override
   Widget build(BuildContext context) {

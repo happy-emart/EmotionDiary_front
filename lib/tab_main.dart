@@ -1,6 +1,6 @@
-import 'package:emotion_diary/emoticon_face.dart';
-import 'package:emotion_diary/calendar_page.dart';
-import 'package:emotion_diary/writing_page.dart';
+import 'package:emotion_diary/widgets/emoticon_face.dart';
+import 'package:emotion_diary/tab_calendar.dart';
+import 'package:emotion_diary/page_writing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:math' as math;
@@ -152,7 +152,7 @@ class _MainPageState extends State<MainPage> {
                                         // SizedBox(height: 15,),
                                         // getContentsBox(context, LineIcons.robot, "AI 감정 통계", "AI는 내 일기를 어떻게 분석했을까요?"),
                                         SizedBox(height: 15,),
-                                        getContentsBox(context, LineIcons.robot, "AI 감정 통계", "AI는 내 일기를 어떻게 분석했을까요?"),
+                                        getContentsBox(context, LineIcons.microphone, "음성으로 기록하기", "때로는, 색다른 일기도 재밌을 거예요"),
                                       ],
                                     ),
                                   ),

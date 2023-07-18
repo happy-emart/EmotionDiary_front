@@ -1,15 +1,16 @@
-import 'package:emotion_diary/analysis_page.dart';
-import 'package:emotion_diary/emoticon_face.dart';
-import 'package:emotion_diary/main_page.dart';
-import 'package:emotion_diary/calendar_page.dart';
+import 'package:emotion_diary/tab_analysis.dart';
+import 'package:emotion_diary/widgets/emoticon_face.dart';
+import 'package:emotion_diary/tab_main.dart';
+import 'package:emotion_diary/tab_calendar.dart';
 import 'package:emotion_diary/widgets/probability.dart';
-import 'package:emotion_diary/writing_page.dart';
+import 'package:emotion_diary/page_writing.dart';
 import 'widgets/radar_chart.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:math' as math;
 import 'package:intl/intl.dart';
+import 'main_sub.dart';
 // import ''; smartRefresher
 
 class Controller extends StatefulWidget {
@@ -21,20 +22,31 @@ class Controller extends StatefulWidget {
 
 class _ControllerState extends State<Controller> {
   int _selectedIndex = 0;
-  int _emotionIndex = 100;
+  final PageController _pageController = PageController();
 
   static List<Widget> _widgetOptions = <Widget>[
     MainPage(name: "영욱"),
-    // m,
     CalendarPage(),
-    // Text("ghhh"),
     AnlaysisPage(),
   ];
 
+  // void _onItemSelected(int index) {
+  //   setState(() {
+  //     _selectedIndex = index;
+  //   });
+  // }
   void _onItemSelected(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.ease,
+    );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -73,7 +85,16 @@ class _ControllerState extends State<Controller> {
             currentIndex: _selectedIndex,
             onTap: _onItemSelected,
           ),
-          body: _widgetOptions.elementAt(_selectedIndex),
+          // body: _widgetOptions.elementAt(_selectedIndex),
+          body: PageView(
+            controller: _pageController,
+            children: _widgetOptions,
+            onPageChanged: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+          ),
         ),
       ]
     );
@@ -105,7 +126,25 @@ class NavigationDrawer extends StatelessWidget {
         leading: const Icon(Icons.home_outlined),
         title: const Text("Home"),
         onTap: () {},
-      )
+      ),
+      // ListTile(
+      //   leading: Icon(
+      //     MainApp.themeNotifier.value == ThemeMode.light
+      //       ? Icons.dark_mode
+      //       : Icons.light_mode
+      //   ),
+      //   onTap: () {
+      //     MainApp.themeNotifier.value =
+      //       MainApp.themeNotifier.value == ThemeMode.light
+      //         ? ThemeMode.dark
+      //         : ThemeMode.light;
+      //   },
+      //   title:
+      //     MainApp.themeNotifier.value == ThemeMode.light
+      //       ? Text("다크 모드로 전환")
+      //       : Text("라이트 모드로 전환"),
+        
+      // ),
     ],
   );
 }

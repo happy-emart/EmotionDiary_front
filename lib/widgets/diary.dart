@@ -5,8 +5,9 @@ class Diary {
   final int emotion;
   final int weather;
   final String diaryText;
+  final String writtenDate;
 
-  Diary({required this.emotion, required this.weather, required this.diaryText});
+  Diary({required this.emotion, required this.weather, required this.diaryText, required this.writtenDate});
 
   @override
   String toString() => diaryText;
@@ -43,11 +44,16 @@ class Diary {
     return "데이터 없음";
   }
 
+  String toDate() {
+    return writtenDate;
+  }
+
   factory Diary.fromJson(Map<String, dynamic> json) {
     return Diary(
+        writtenDate: json['writtendate'],
         emotion: json['emotion'],
         weather: json['weather'],
-        diaryText: json['diaryText'],
+        diaryText: json['text'],
     );
   }
 }

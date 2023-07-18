@@ -1,7 +1,7 @@
 import 'package:emotion_diary/widgets/probability.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:emotion_diary/writing_page.dart'; // for emotionConverter(int emotion)
+import 'package:emotion_diary/page_writing.dart'; // for emotionConverter(int emotion)
 
 class EmotionRadarChart extends StatefulWidget {
   EmotionRadarChart({super.key, required this.todayProbability, required this.yesterdayProbability, required this.isMini});
