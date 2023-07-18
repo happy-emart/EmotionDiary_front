@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:math' as math;
 import 'package:intl/intl.dart';
+import 'package:line_icons/line_icons.dart';
+import 'package:wrapped_korean_text/wrapped_korean_text.dart';
 // import ''; smartRefresher
 
 
@@ -25,11 +27,14 @@ class _MainPageState extends State<MainPage> {
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14,
                               );
-    var neutralEmoticon = buildEmoticonButton(context, emoticonText, '🙂', "평온해요", 1);
-    var happyEmoticon = buildEmoticonButton(context, emoticonText, '😆', "좋아요", 2);
-    var sadEmoticon = buildEmoticonButton(context, emoticonText, '😢', "슬퍼요", 3);
-    var angryEmoticon = buildEmoticonButton(context, emoticonText, '😠', "화나요", 4);
-    var scaredEmoticon = buildEmoticonButton(context, emoticonText, '😰', "두려워요", 5);
+    var neutralEmoticon = buildEmoticonButton(context, emoticonText, '🙂', "중립이에요", 0);
+    var happyEmoticon = buildEmoticonButton(context, emoticonText, '😆', "행복해요", 1);
+    var sadEmoticon = buildEmoticonButton(context, emoticonText, '😢', "슬퍼요", 2);
+    var angryEmoticon = buildEmoticonButton(context, emoticonText, '😠', "화나요", 3);
+    var scaredEmoticon = buildEmoticonButton(context, emoticonText, '😰', "불안해요", 4);
+    var embrassedEmoticon = buildEmoticonButton(context, emoticonText, '😵‍💫', "당황했어요", 5);
+    var hateEmoticon = buildEmoticonButton(context, emoticonText, '😒', "싫어요", 6);
+
     return SafeArea(
             child:
               Column(
@@ -40,13 +45,16 @@ class _MainPageState extends State<MainPage> {
                       padding: const EdgeInsets.all(25.0),
                       child: Column(
                         children: [
-                          // Greeting
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              greetingTextMaker("$name님"),
-                            ],
-                          ), 
+                          LayoutBuilder(
+                            builder: (context, constraints) => 
+                            // Greeting
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                greetingTextMaker("$name님", constraints.maxWidth),
+                              ],
+                            ), 
+                          ),
                           SizedBox(
                             height: 20,
                           ),
@@ -76,7 +84,7 @@ class _MainPageState extends State<MainPage> {
                                   ]
                                 ),
                                 SizedBox(
-                                  height: 20,
+                                  height: 10,
                                 ),
                                 SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
@@ -102,6 +110,14 @@ class _MainPageState extends State<MainPage> {
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(5,0,5,0),
                                         child: scaredEmoticon,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(5,0,5,0),
+                                        child: embrassedEmoticon,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(5,0,5,0),
+                                        child: hateEmoticon,
                                       ),
                                     ]
                                   ),
@@ -130,37 +146,13 @@ class _MainPageState extends State<MainPage> {
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(25),
-                                          child: Container(
-                                            height: 100,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        SizedBox(height: 25,),
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(25),
-                                          child: Container(
-                                            height: 100,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        SizedBox(height: 25,),
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(25),
-                                          child: Container(
-                                            height: 100,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        SizedBox(height: 25,),
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(25),
-                                          child: Container(
-                                            height: 100,
-                                            color: Colors.white,
-                                          ),
-                                        ),
+                                        getContentsBox(context, LineIcons.history, "추억 돌아보기", "과거의 일기를 읽으며 시간 여행을 떠나요"),
+                                        SizedBox(height: 15,),
+                                        // getContentsBox(context, LineIcons.pen, "내가 기록한 감정 통계", "과거의 일기를 읽으며 추억에 젖어 보아요"),
+                                        // SizedBox(height: 15,),
+                                        // getContentsBox(context, LineIcons.robot, "AI 감정 통계", "AI는 내 일기를 어떻게 분석했을까요?"),
+                                        SizedBox(height: 15,),
+                                        getContentsBox(context, LineIcons.robot, "AI 감정 통계", "AI는 내 일기를 어떻게 분석했을까요?"),
                                       ],
                                     ),
                                   ),
@@ -205,9 +197,47 @@ class _MainPageState extends State<MainPage> {
     )
   );
   }
+
+  ClipRRect getContentsBox(BuildContext context, IconData icon, String mainText, String description) {
+  return
+    ClipRRect(
+      borderRadius: BorderRadius.circular(25),
+      child: Container(
+        height: 120,
+        color: Theme.of(context).colorScheme.onPrimary,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    icon,
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+                  SizedBox(width: 5,),
+                  Text(
+                    mainText,
+                    style: TextStyle(
+                      fontFamily: "bookk",
+                      fontSize: 20,
+                    ),
+                  ),
+                ]
+              ),
+              SizedBox(height: 10,),
+              Text(description),
+            ],
+          ),
+        ),
+      ),
+    );
+  }  
 }
 
-Column greetingTextMaker(String name) {
+Column greetingTextMaker(String name, double width) {
   DateTime now = new DateTime.now();
   var date = now.year.toString()+"년 "+now.month.toString()+"월 "+now.day.toString()+"일 ";
 
@@ -222,15 +252,18 @@ Column greetingTextMaker(String name) {
     Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          greetingMentList[math.Random().nextInt(greetingMentList.length)]+name,
-          style: TextStyle(
-            fontFamily: "bookk",
-            fontWeight: FontWeight.w700,
-            fontSize: 20,
-            color: Colors.white,
+        Container(
+          width: width,
+          child: WrappedKoreanText(
+            greetingMentList[math.Random().nextInt(greetingMentList.length)]+name,
+            style: TextStyle(
+              fontFamily: "bookk",
+              fontWeight: FontWeight.w700,
+              fontSize: 40,
+              color: Colors.white,
+              ),
+            ),
           ),
-        ),
         SizedBox(
           height: 8,
         ),
@@ -240,6 +273,7 @@ Column greetingTextMaker(String name) {
             fontFamily: "bookk",
             fontWeight: FontWeight.w400,
             color: Colors.white70,
+            fontSize: 16,
           ),
         ),
       ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'emoticon_face.dart';
 import 'weather_radio.dart';
@@ -16,6 +17,8 @@ class WritingPage extends StatefulWidget {
 
 class _WritingPageState extends State<WritingPage> {
   final TextEditingController _diaryController = TextEditingController();
+  final TextEditingController _eventController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   late int selectedButton = widget.emotion;
   void toggleSelection(int buttonNumber) {
     if (selectedButton == buttonNumber) return;
@@ -99,11 +102,28 @@ class _WritingPageState extends State<WritingPage> {
     //     ],
     //   ),
     // );
-    var neutralEmoticon = buildButton(1, '🙂', "평온해요");
-    var happyEmoticon = buildButton(2, '😆', "좋아요");
-    var sadEmoticon = buildButton(3, '😢', "슬퍼요");
-    var angryEmoticon = buildButton(4, '😠', "화나요");
-    var scaredEmoticon = buildButton(5, '😰', "두려워요");
+    var neutralEmoticon = buildButton(0, '🙂', "중립이에요");
+    var happyEmoticon = buildButton(1, '😆', "행복해요");
+    var sadEmoticon = buildButton(2, '😢', "슬퍼요");
+    var angryEmoticon = buildButton(3, '😠', "화나요");
+    var scaredEmoticon = buildButton(4, '😰', "불안해요");
+    var embrassedEmoticon = buildButton(5, '😵‍💫', "당황했어요");
+    var hateEmoticon = buildButton(6, '😒', "싫어요");
+
+    var emoticonButtonScroll = EmotionButtonScroll(scrollController: _scrollController, neutralEmoticon: neutralEmoticon, happyEmoticon: happyEmoticon, sadEmoticon: sadEmoticon, angryEmoticon: angryEmoticon, scaredEmoticon: scaredEmoticon, embrassedEmoticon: embrassedEmoticon, hateEmoticon: hateEmoticon);
+  
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        if (selectedButton > 3)
+        _scrollController.animateTo(200.0, duration: Duration(milliseconds: 500), curve: Curves.ease);
+      }
+    });
+    var now = DateTime.now();
+    var yesterday = DateTime.now().subtract(Duration(days: 1));
+    var today = now.hour < 7 ? yesterday : now;
+    var todayString = DateFormat("yyyy년 MM월 dd일").format(today);
+
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -115,7 +135,10 @@ class _WritingPageState extends State<WritingPage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      // 오늘의 기분 -> 메인 페이지에서 선택한 것을 활성으로 띄워주고, 변경하려면 변경 버튼을 눌러 감정 변경이 가능한 Alert Dialog를 띄울 예정
+                      Text(
+                        "▷ $todayString자 일기를 작성합니다"
+                      ),
+                      SizedBox(height: 10,),
                       Container(
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
@@ -144,41 +167,13 @@ class _WritingPageState extends State<WritingPage> {
                             SizedBox(
                               height: 10,
                             ),
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(5,0,5,0),
-                                    child: neutralEmoticon,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(5,0,5,0),
-                                    child: happyEmoticon,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(5,0,5,0),
-                                    child: sadEmoticon,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(5,0,5,0),
-                                    child: angryEmoticon,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(5,0,5,0),
-                                    child: scaredEmoticon,
-                                  ),
-                                ]
-                              ),
-                            ),
+                            emoticonButtonScroll
                           ],
                         ),
                       ),
                       SizedBox(
                         height: 10,
                       ),
-    
                       // selecting weather
                       Container(
                         padding: EdgeInsets.all(10),
@@ -278,6 +273,84 @@ class _WritingPageState extends State<WritingPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+int emotionConverter(int emotion) {
+  switch (emotion) {
+    case 0: return 4;
+    case 1: return 5;
+    case 2: return 3;
+    case 3: return 2;
+    case 4: return 0;
+    case 5: return 1;
+    case 6: return 6;
+  }
+  return 0;
+}
+
+class EmotionButtonScroll extends StatelessWidget {
+  const EmotionButtonScroll({
+    super.key,
+    required ScrollController scrollController,
+    required this.neutralEmoticon,
+    required this.happyEmoticon,
+    required this.sadEmoticon,
+    required this.angryEmoticon,
+    required this.scaredEmoticon,
+    required this.embrassedEmoticon,
+    required this.hateEmoticon,
+  }) : _scrollController = scrollController;
+
+  final ScrollController _scrollController;
+  final Widget neutralEmoticon;
+  final Widget happyEmoticon;
+  final Widget sadEmoticon;
+  final Widget angryEmoticon;
+  final Widget scaredEmoticon;
+  final Widget embrassedEmoticon;
+  final Widget hateEmoticon;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      controller: _scrollController,
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(5,0,5,0),
+            child: neutralEmoticon,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(5,0,5,0),
+            child: happyEmoticon,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(5,0,5,0),
+            child: sadEmoticon,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(5,0,5,0),
+            child: angryEmoticon,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(5,0,5,0),
+            child: scaredEmoticon,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(5,0,5,0),
+            child: embrassedEmoticon,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(5,0,5,0),
+            child: hateEmoticon,
+          ),
+
+        ]
       ),
     );
   }

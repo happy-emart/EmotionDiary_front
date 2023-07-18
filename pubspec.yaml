@@ -13,6 +13,9 @@ dependencies:
   table_calendar: ^3.0.6
   http: ^1.1.0
   fl_chart: ^0.63.0
+  shared_preferences: ^2.2.0
+  line_icons: ^2.0.3
+  wrapped_korean_text: ^0.0.3
 
 dev_dependencies:
   flutter_test:

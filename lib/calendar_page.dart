@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:emotion_diary/widgets/calendar.dart';
+import 'package:emotion_diary/widgets/diary.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class _CalendarPageState extends State<CalendarPage> {
   var yearNowString = new DateTime.now().year.toString();
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
-  List<Event> eventsForDay = [];
+  Diary eventsForDay = Diary(emotion: 1, weather: 1, diaryText: "");
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +61,9 @@ class _CalendarPageState extends State<CalendarPage> {
                               setState(() {
                                 this.selectedDay = selectedDay;
                                 this.focusedDay = focusedDay;
-                                this.eventsForDay = getEventsForDay(selectedDay);
-                              });
+                                this.eventsForDay = getEventsForDay(selectedDay).isNotEmpty ? getEventsForDay(selectedDay)[0] : Diary(emotion: 100, weather: 100, diaryText: "일기를 쓰지 않은 날입니다.");
+                                }
+                              );
                             },
                             ),
                           ),
@@ -77,7 +79,13 @@ class _CalendarPageState extends State<CalendarPage> {
                           color: Theme.of(context).colorScheme.onPrimary,
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Text(eventsForDay.toString()),
+                        child: Column(
+                          children: [
+                            Text(eventsForDay.toString()),
+                            Text(eventsForDay.toEmotion()),
+                            Text(eventsForDay.toWeather()),
+                          ],
+                        ),
                       ),
                     ],
                   ),

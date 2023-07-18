@@ -2,6 +2,7 @@ import 'package:emotion_diary/analysis_page.dart';
 import 'package:emotion_diary/emoticon_face.dart';
 import 'package:emotion_diary/main_page.dart';
 import 'package:emotion_diary/calendar_page.dart';
+import 'package:emotion_diary/widgets/probability.dart';
 import 'package:emotion_diary/writing_page.dart';
 import 'widgets/radar_chart.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -20,15 +21,14 @@ class Controller extends StatefulWidget {
 
 class _ControllerState extends State<Controller> {
   int _selectedIndex = 0;
-  int _emotionIndex = 0;
+  int _emotionIndex = 100;
 
   static List<Widget> _widgetOptions = <Widget>[
     MainPage(name: "영욱"),
     // m,
     CalendarPage(),
     // Text("ghhh"),
-    // AnlaysisPage(),
-    RadarChartSample1(),
+    AnlaysisPage(),
   ];
 
   void _onItemSelected(int index) {

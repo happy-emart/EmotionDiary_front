@@ -3,6 +3,11 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:collection';
+import 'diary.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+String baseUrl = 'http://localhost';
 
 class TableCalendarScreen extends StatefulWidget {
   TableCalendarScreen({Key? key, required this.selectedDay, required this.onDaySelected, required this.focusedDay}) : super(key: key);
@@ -17,10 +22,58 @@ class TableCalendarScreen extends StatefulWidget {
 class _TableCalendarScreenState extends State<TableCalendarScreen> {
   CalendarFormat format = CalendarFormat.month;
 
+  Future<String?> getJwtToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('jwtToken');
+  }
+
+//   Future<Map<DateTime, dynamic>> getDateEventMap(DateTime date) async {
+//     서버와 통신해 데이터를 받아온다 -> 일기 데이터와 감정 데이터 부분으로 분리하기
+//     final String Url = "$baseUrl/written_diary";
+//     final jwtToken = await getJwtToken();
+//     final request = Uri.parse(Url);
+//     final headers = <String, String> {
+//       'Content-Type': 'application/json; charset=UTF-8',
+//       'Authorization': 'Bearer $jwtToken'
+//     };
+
+//     try
+//     {
+//       final response = await http.get(request, headers: headers);
+//       var json = jsonDecode(response.body);
+//       List<Letter> letters = [];
+//       List<Container> containers = [];
+//       for (var LetterJson in json) {
+//         print(LetterJson);
+//         letters.add(Letter.fromJson(LetterJson));
+//       }
+
+//       for(var fruit in letters) {
+//         containers.add(createFruit(context, fruit.posX, fruit.posY, fruit.id, fruit.fruitType));
+//       }
+//       return containers;
+//     }
+//     catch(error)
+//     {
+//       print('error : $error');
+//     }
+//     return [];
+
+//     // return ;
+//   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: TableCalendar(
+        onCalendarCreated: (controller) {
+          var now = DateTime.now();
+          // getDateEventMap(now);
+        },
+        onPageChanged: (date) {
+          // getDateEventMap(date);
+        },
         shouldFillViewport: true,
         calendarStyle: CalendarStyle(
           markerDecoration: BoxDecoration(
@@ -30,10 +83,6 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
           weekendTextStyle: TextStyle(color: Theme.of(context).colorScheme.onBackground),
         ),
         eventLoader: getEventsForDay,
-        // eventLoader: (day) {
-        //   if (day.day%2 == 0) return ['hi'];
-        //   return [];
-        // },
         headerStyle: HeaderStyle(
           formatButtonVisible: false,
           titleCentered: true,
@@ -42,12 +91,6 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
         lastDay: DateTime.utc(2030, 3, 14),
         locale: 'ko_KR',
         focusedDay: widget.focusedDay,
-        // onDaySelected: (DateTime selectedDay, focusedDay) {
-        //   setState(() {
-        //     widget.selectedDay = selectedDay;
-        //     widget.focusedDay = focusedDay;
-        //   });
-        // },
         onDaySelected: widget.onDaySelected,
         selectedDayPredicate: (DateTime day) {
           return isSameDay(widget.selectedDay, day);
@@ -60,43 +103,40 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
       ),
     );
   }
+
+  // void 데이터를 불러와야 하는데, 
+  // events.add(Map)
+
+  //
 }
 
-class Event {
-  String title;
-  bool complete;
-  Event(this.title, this.complete);
 
-  @override
-  String toString() => title;
-}
-
-Map<DateTime,dynamic> eventSource = {
-  DateTime(2023,8,13) : [Event('5분 기도하기',false),Event('교회 가서 인증샷 찍기',true),Event('QT하기',true),Event('셀 모임하기',false),],
-  DateTime(2023,8,5) : [Event('5분 기도하기',false),Event('치킨 먹기',true),Event('QT하기',true),Event('셀 모임하기',false),],
-  DateTime(2023,8,8) : [Event('5분 기도하기',false),Event('자기 셀카 올리기',true),Event('QT하기',false),Event('셀 모임하기',false),],
-  DateTime(2023,8,11) : [Event('5분 기도하기',false),Event('가족과 저녁식사 하기',true),Event('QT하기',true)],
-  DateTime(2023,8,13) : [Event('5분 기도하기',false),Event('교회 가서 인증샷 찍기',true),Event('QT하기',false),Event('셀 모임하기',false),],
-  DateTime(2023,8,15) : [Event('5분 기도하기',false),Event('치킨 먹기',false),Event('QT하기',true),Event('셀 모임하기',false),],
-  DateTime(2023,8,18) : [Event('5분 기도하기',false),Event('자기 셀카 올리기',true),Event('QT하기',false),Event('셀 모임하기',false),],
-  DateTime(2023,8,20) : [Event('5분 기도하기',true),Event('자기 셀카 올리기',true),Event('QT하기',true),Event('셀 모임하기',true),],
-  DateTime(2023,8,21) : [Event('5분 기도하기',false),Event('가족과 저녁식사 하기',true),Event('QT하기',false)],
-  DateTime(2023,7,13) : [Event('5분 기도하기',false),Event('교회 가서 인증샷 찍기',true),Event('QT하기',true),Event('셀 모임하기',false),],
-  DateTime(2023,7,5) : [Event('5분 기도하기',false),Event('치킨 먹기',true),Event('QT하기',true),Event('셀 모임하기',false),],
-  DateTime(2023,7,8) : [Event('5분 기도하기',false),Event('자기 셀카 올리기',true),Event('QT하기',false),Event('셀 모임하기',false),],
-  DateTime(2023,7,11) : [Event('5분 기도하기',false),Event('가족과 저녁식사 하기',true),Event('QT하기',true)],
-  DateTime(2023,7,13) : [Event('5분 기도하기',false),Event('교회 가서 인증샷 찍기',true),Event('QT하기',false),Event('셀 모임하기',false),],
-  DateTime(2023,7,15) : [Event('5분 기도하기',false),Event('치킨 먹기',false),Event('QT하기',true),Event('셀 모임하기',false),],
-  DateTime(2023,7,18) : [Event('5분 기도하기',false),Event('자기 셀카 올리기',true),Event('QT하기',false),Event('셀 모임하기',false),],
-  DateTime(2023,7,20) : [Event('5분 기도하기',true),Event('자기 셀카 올리기',true),Event('QT하기',true),Event('셀 모임하기',true),],
-  DateTime(2023,7,21) : [Event('5분 기도하기',false),Event('가족과 저녁식사 하기',true),Event('QT하기',false)]
+Map<DateTime, dynamic> eventSource = {
+  DateTime(2023,8,13) : [Diary(emotion: 1, weather: 1, diaryText: '5분 기도하기')],
+  DateTime(2023,8,5) : [Diary(emotion: 2, weather: 1, diaryText: '밥 먹기')],
+  DateTime(2023,8,8) : [Diary(emotion: 2, weather: 1, diaryText: '코딩 그만하기')],
+  DateTime(2023,8,11) : [Diary(emotion: 2, weather: 1, diaryText: '명상하기')],
+  DateTime(2023,8,13) : [Diary(emotion: 2, weather: 1, diaryText: '삶이 언제나 쉬운 것은 아니다')],
+  DateTime(2023,8,15) : [Diary(emotion: 2, weather: 1, diaryText: '안정적인 사람이 되기')],
+  DateTime(2023,8,18) : [Diary(emotion: 2, weather: 1, diaryText: '행복하기')],
+  DateTime(2023,8,20) : [Diary(emotion: 2, weather: 1, diaryText: '그림 그리기')],
+  DateTime(2023,8,21) : [Diary(emotion: 2, weather: 1, diaryText: '노래 듣기')],
+  DateTime(2023,7,13) : [Diary(emotion: 2, weather: 1, diaryText: '이거 로파이 음악 괜찮은걸')],
+  DateTime(2023,7,5) : [Diary(emotion: 2, weather: 1, diaryText: '근데 로파이가 뭐지')],
+  DateTime(2023,7,8) : [Diary(emotion: 2, weather: 1, diaryText: '세상에 내가 모르는 것은 너무도 많아')],
+  DateTime(2023,7,11) : [Diary(emotion: 2, weather: 1, diaryText: '궁금함이 미덕으로 자리잡은 세상')],
+  DateTime(2023,7,13) : [Diary(emotion: 2, weather: 1, diaryText: '언제나 옳은 것은 없기에')],
+  DateTime(2023,7,15) : [Diary(emotion: 2, weather: 1, diaryText: '우리는 늘 너무도 매몰된 생각만을 고집한다')],
+  DateTime(2023,7,18) : [Diary(emotion: 2, weather: 1, diaryText: '서로에게 늘 상처를 주면서')],
+  DateTime(2023,7,20) : [Diary(emotion: 2, weather: 1, diaryText: '그러기를 반복한다')],
+  DateTime(2023,7,21) : [Diary(emotion: 2, weather: 1, diaryText: '렘브란트')],
 };
 
 final events = LinkedHashMap(
   equals: isSameDay,
 )..addAll(eventSource); 
 
-List<Event> getEventsForDay(DateTime day) {
+List<Diary> getEventsForDay(DateTime day) {
   return events[DateTime.parse(DateFormat('yyyy-MM-dd').format(day))] ?? [];
 }
 
@@ -121,3 +161,4 @@ List<Event> getEventsForDay(DateTime day) {
 //     )
 //   );
 // }
+
