@@ -4,9 +4,10 @@ import 'dart:convert';
 import 'widgets/emoticon_face.dart';
 import 'widgets/weather_radio.dart';
 import 'package:http/http.dart' as http;
+import 'widgets/get_jwt_token.dart';
 
-String globalUrl = "http://localhost";
-String flaskUrl = "http://172.10.9.25:443/";
+String globalUrl = "http://localhost:8080";
+String modelUrl = "http://172.10.9.25:443/";
 
 class WritingPage extends StatefulWidget {
   int emotion;
@@ -204,7 +205,7 @@ class _WritingPageState extends State<WritingPage> {
                             // SizedBox(
                             //   height: 10,
                             // ),
-                            RadioButtonWidget(),
+                            RadioButtonWidget1(),
                           ],
                         ),
                       ),
@@ -259,8 +260,10 @@ class _WritingPageState extends State<WritingPage> {
                             'emotion': selectedButton,
                             'diaryText': diary,
                             'weather': selectedButton,
+                            'writtenDate': DateFormat("yyyy-MM-dd").format(today),
                           };
                           sendDiary(body);
+                          Navigator.pop(context);
                         },
                         child: Text(
                           "작성 완료",
@@ -277,19 +280,6 @@ class _WritingPageState extends State<WritingPage> {
       ),
     );
   }
-}
-
-int emotionConverter(int emotion) {
-  switch (emotion) {
-    case 0: return 4;
-    case 1: return 5;
-    case 2: return 3;
-    case 3: return 2;
-    case 4: return 0;
-    case 5: return 1;
-    case 6: return 6;
-  }
-  return 0;
 }
 
 class EmotionButtonScroll extends StatelessWidget {
@@ -358,17 +348,14 @@ class EmotionButtonScroll extends StatelessWidget {
 }
 
 void sendDiary(Map<String, dynamic> body) async {
-  // String Url = "$globalUrl/sent_letters";
-  String Url = flaskUrl;
+  String springUrl = "$globalUrl/sent_letters";
+  String flaskUrl = modelUrl;
   
-  final request = Uri.parse(Url);
-  // final jwtToken = await getJwtToken();
-  // final headers = <String, String> {
-  //   'Content-Type': 'application/json; charset=UTF-8',
-  //   'Authorization': 'Bearer $jwtToken'
-  // };
+  final request = Uri.parse(springUrl);
+  final jwtToken = await getJwtToken();
   final headers = <String, String> {
     'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization': 'Bearer $jwtToken'
   };
   try
     {
@@ -376,13 +363,8 @@ void sendDiary(Map<String, dynamic> body) async {
       print(json.encode(body));
       print(response.body);
     }
-    catch(error)
-    {
-      print('error : $error');
-    }
+  catch(error)
+  {
+    print('error : $error');
   }
-
-// Future<String?> getJwtToken() async {
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   return prefs.getString('jwtToken');
-// }
+}

@@ -8,8 +8,9 @@ import 'diary.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'get_jwt_token.dart';
 
-String baseUrl = 'http://localhost';
+String baseUrl = 'http://localhost:8080';
 
 class TableCalendarScreen extends StatefulWidget {
   TableCalendarScreen({Key? key, required this.selectedDay, required this.onDaySelected, required this.focusedDay}) : super(key: key);
@@ -26,15 +27,10 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
   late List<Diary> firstList;
   late Map<DateTime, Diary> firstMap;
 
-  Future<String?> getJwtToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('jwtToken');
-  }
-
   Future<List<Diary>> getDateEventMap(DateTime date) async {
     // 서버와 통신해 데이터를 받아온다 -> 일기 데이터와 감정 데이터 부분으로 분리하기
-    var writtenDate = DateFormat("yy.MM.dd").format(date);
-    final String Url = "$baseUrl/written_diary?writtenDate=$writtenDate";
+    var writtenDate = DateFormat("yyyy-MM-dd").format(date);
+    final String Url = "$baseUrl/received_letters?writtenDate=$writtenDate";
     final jwtToken = await getJwtToken();
     final request = Uri.parse(Url);
     final headers = <String, String> {
@@ -46,11 +42,12 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
       List<Diary> diaryList = [];
       final response = await http.get(request, headers: headers);
       var json = jsonDecode(response.body);
+      print(json);
       for (var diaryJson in json) {
         // print(diaryJson);
         diaryList.add(Diary.fromJson(diaryJson));
-        return diaryList;
       }
+      return diaryList;
     }
     catch(error)
     {
@@ -64,6 +61,9 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
     for (var diary in diaryList) {
       var stringToDateTime = DateTime.parse(diary.toDate());
       returnMap[stringToDateTime] = diary;
+      // print("------------");
+      // print(returnMap[stringToDateTime]);
+      // print("------------");
     }
     return returnMap;
   }
@@ -82,14 +82,15 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
         onCalendarCreated: (controller) async {
           var list = await getDateEventMap(DateTime.now());
           var map = convertListToMap(list);
-          eventSource.addAll(map);
+          events.addAll(map);
           setState(() {}); // Trigger a rebuild after data is loaded
         },
         onPageChanged: (date) async {
           var list = await getDateEventMap(date);
           var map = convertListToMap(list);
-          eventSource.addAll(map);
-          setState(() {}); // Trigger a rebuild after data is loaded
+          events.addAll(map);
+          print(events);
+          // setState(() {}); // Trigger a rebuild after data is loaded
         },
         shouldFillViewport: true,
         calendarStyle: CalendarStyle(

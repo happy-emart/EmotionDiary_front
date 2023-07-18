@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'enum.dart';
 
 class Diary {
-  final int emotion;
-  final int weather;
+  final String emotion;
+  final String weather;
   final String diaryText;
   final String writtenDate;
 
@@ -14,11 +14,11 @@ class Diary {
 
   String toWeather() {
     switch (weather) {
-      case 0:
+      case "0":
         return "맑음";
-      case 1:
+      case "1":
         return "흐림";
-      case 2:
+      case "2":
         return "눈/비";
     }
     return "데이터 없음";
@@ -26,19 +26,19 @@ class Diary {
 
   String toEmotion() {
     switch (emotion) {
-      case 0:
+      case "0":
         return "불안해요";
-      case 1:
+      case "1":
         return "당황했어요";
-      case 2:
+      case "2":
         return "화나요";
-      case 3:
+      case "3":
         return "슬퍼요";
-      case 4:
+      case "4":
         return "중립이에요";
-      case 5:
+      case "5":
         return "행복해요";
-      case 6:
+      case "6":
         return "싫어요";
     }
     return "데이터 없음";
@@ -50,7 +50,7 @@ class Diary {
 
   factory Diary.fromJson(Map<String, dynamic> json) {
     return Diary(
-        writtenDate: json['writtendate'],
+        writtenDate: json['writtenDate'],
         emotion: json['emotion'],
         weather: json['weather'],
         diaryText: json['text'],

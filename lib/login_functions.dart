@@ -9,7 +9,7 @@ import 'main_sub.dart';
 import 'dialog_builders.dart';
 import 'login_kakao.dart';
 
-String baseUrl = "http://168.131.151.213:4040";
+String baseUrl = "http://localhost:8080";
 
 
 class LoginFunctions {
@@ -62,45 +62,45 @@ class LoginFunctions {
 }
 
 Future<String?> _login(String id, String pw, BuildContext context) async {
-  // final String Url = "$baseUrl/auth";
-  // final request = Uri.parse(Url);
-  // var headers = <String, String> {
-  //   'Content-Type': 'application/json; charset=UTF-8',
-  // };
+  final String Url = "$baseUrl/auth";
+  final request = Uri.parse(Url);
+  var headers = <String, String> {
+    'Content-Type': 'application/json; charset=UTF-8',
+  };
 
-  // var body = {
-  //   'email': id,
-  //   'password': pw,
-  // };
+  var body = {
+    'email': id,
+    'password': pw,
+  };
 
-  // http.Response response;
-  // try {
-  //   response = await http.post(request, headers: headers, body: json.encode(body));
-  //   if(response.statusCode == 200)
-  //   {
-  //     storeJwtToken(response.body);
-  //     await Future.delayed(const Duration(seconds: 2));
-  //     // startFirstPage(context);
-  //     return "로그인에 성공했습니다";
-  //   }
-  //   else
-  //   {
-  //     final error = json.decode(response.body);
-  //     print('Request failed with status: $error');
-  //     return "이메일과 비밀번호가 일치하지 않거나, 가입하지 않은 회원입니다.";
-  //   }
-  // } 
-  // catch(error)
-  //   {
-  //     print('error : $error');
-  //     return "이메일과 비밀번호가 일치하지 않거나, 가입하지 않은 회원입니다.";
-  //     // return "서버와 연결 시도 중 문제가 발생했습니다.";
-  //   }
+  http.Response response;
+  try {
+    response = await http.post(request, headers: headers, body: json.encode(body));
+    if(response.statusCode == 200)
+    {
+      storeJwtToken(response.body);
+      await Future.delayed(const Duration(seconds: 2));
+      // startFirstPage(context);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MainAppSub()),
+      );
+      return null;
+    }
+    else
+    {
+      final error = json.decode(response.body);
+      print('Request failed with status: $error');
+      return "이메일과 비밀번호가 일치하지 않거나, 가입하지 않은 회원입니다.";
+    }
+  } 
+  catch(error)
+    {
+      print('error : $error');
+      return "이메일과 비밀번호가 일치하지 않거나, 가입하지 않은 회원입니다.";
+      // return "서버와 연결 시도 중 문제가 발생했습니다.";
+    }
 
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(builder: (context) => MainAppSub()),
-  );
 
   return null;
 
