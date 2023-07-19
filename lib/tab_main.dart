@@ -7,9 +7,14 @@ import 'dart:math' as math;
 import 'package:intl/intl.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:wrapped_korean_text/wrapped_korean_text.dart';
+import 'tab_controller.dart';
 // import ''; smartRefresher
 
-
+  // void _moveToDashboard() {
+  //   setState(() {
+  //     _selectedIndex = 2;
+  //   });
+  // }
 class MainPage extends StatefulWidget {
   final String name;
   const MainPage({Key? key, required this.name}) : super(key: key);
@@ -35,39 +40,7 @@ class _MainPageState extends State<MainPage> {
     var embrassedEmoticon = buildEmoticonButton(context, emoticonText, '😵‍💫', "당황했어요", 5);
     var hateEmoticon = buildEmoticonButton(context, emoticonText, '😒', "싫어요", 6);
 
-    return SafeArea(
-            child:
-              Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(25.0),
-                      child: Column(
-                        children: [
-                          LayoutBuilder(
-                            builder: (context, constraints) => 
-                            // Greeting
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                greetingTextMaker("$name님", constraints.maxWidth),
-                              ],
-                            ), 
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            padding: EdgeInsets.fromLTRB(5, 15, 5, 15),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                width: 1,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              )
-                            ),
-                            child: Column(
+    var emotionScroll = Column(
                               children: [
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -123,40 +96,90 @@ class _MainPageState extends State<MainPage> {
                                   ),
                                 ),
                               ],
+                            );
+    var emptyScroll = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "오늘의 기록을 완료하셨네요!\n대시보드에서 확인해볼까요?",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: "bookk",
+                fontWeight: FontWeight.w400,
+                fontSize: 22,
+              ),
+            ),
+          ]
+        ),
+      ],
+    );
+    return SafeArea(
+            child:
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          LayoutBuilder(
+                            builder: (context, constraints) => 
+                            // Greeting
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                greetingTextMaker("$name님", constraints.maxWidth),
+                              ],
+                            ), 
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 165,
+                              padding: EdgeInsets.fromLTRB(5, 15, 5, 15),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  width: 1,
+                                  color: Theme.of(context).colorScheme.onPrimary,
+                                )
+                              ),
+                              child: isDiaryWritten ? emptyScroll : emotionScroll,
                             ),
                           ),
                           SizedBox(height: 25,),
-                          Expanded(
-                            child: Container(
-                            //   decoration: BoxDecoration(
-                            //   color: Colors.amber,
-                            // //   borderRadius: BorderRadius.circular(20),
-                            //   border: Border(
-                            //     top: BorderSide(
-                            //       color: Theme.of(context).colorScheme.onPrimary,
-                            //       width: 1,
-                            //     ),
-                            //   )
-                            // ),
-                              color: Theme.of(context).colorScheme.background,
-                              child: Center(
-                                child: Flexible(
-                                  fit: FlexFit.loose,
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        getContentsBox(context, LineIcons.history, "추억 돌아보기", "과거의 일기를 읽으며 시간 여행을 떠나요"),
-                                        SizedBox(height: 15,),
-                                        // getContentsBox(context, LineIcons.pen, "내가 기록한 감정 통계", "과거의 일기를 읽으며 추억에 젖어 보아요"),
-                                        // SizedBox(height: 15,),
-                                        // getContentsBox(context, LineIcons.robot, "AI 감정 통계", "AI는 내 일기를 어떻게 분석했을까요?"),
-                                        SizedBox(height: 15,),
-                                        getContentsBox(context, LineIcons.microphone, "음성으로 기록하기", "때로는, 색다른 일기도 재밌을 거예요"),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                          Container(
+                          //   decoration: BoxDecoration(
+                          //   color: Colors.amber,
+                          // //   borderRadius: BorderRadius.circular(20),
+                          //   border: Border(
+                          //     top: BorderSide(
+                          //       color: Theme.of(context).colorScheme.onPrimary,
+                          //       width: 1,
+                          //     ),
+                          //   )
+                          // ),
+                            color: Theme.of(context).colorScheme.background,
+                            child: Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  getContentsBox(context, LineIcons.history, "추억 돌아보기", "과거의 일기를 읽으며 시간 여행을 떠나요"),
+                                  // getContentsBox(context, LineIcons.pen, "내가 기록한 감정 통계", "과거의 일기를 읽으며 추억에 젖어 보아요"),
+                                  // SizedBox(height: 15,),
+                                  // getContentsBox(context, LineIcons.robot, "AI 감정 통계", "AI는 내 일기를 어떻게 분석했을까요?"),
+                                  SizedBox(height: 15,),
+                                  getContentsBox(context, LineIcons.microphone, "음성으로 기록하기", "때로는, 색다른 일기도 재밌을 거예요"),
+                                ],
                               ),
                             ),
                           ),
@@ -179,9 +202,9 @@ class _MainPageState extends State<MainPage> {
   InkWell buildEmoticonButton(BuildContext context, TextStyle emoticonText, String emoticon, String emotionDescription, int emotionToInt) {
     return InkWell(
     onTap:() {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => WritingPage(emotion: emotionToInt)));
+        MaterialPageRoute(builder: (context) => WritingPage(emotion: emotionToInt,)));
     },
     child: Column(
       children: [

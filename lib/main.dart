@@ -69,9 +69,14 @@ class _LoginScreenState extends State<LoginScreen> {
       loginMobileTheme: _mobileTheme,
       loginTexts: _loginTexts,
       passwordValidator: ValidatorModel(
-          checkUpperCase: false, checkNumber: true,
-          // checkUpperCase: false, checkNumber: false, checkLowerCase: false, checkSpace: false, length: 1,
-          validatorCallback: (String? password) => "비밀번호는 문자와 숫자를 모두 포함하고, 6자 이상이어야 합니다"),
+          customValidator: (password) {
+            return null;
+          },
+      ),
+      // passwordValidator: ValidatorModel(
+      //     checkUpperCase: false, checkNumber: true,
+      //     // checkUpperCase: false, checkNumber: false, checkLowerCase: false, checkSpace: false, length: 1,
+      //     validatorCallback: (String? password) => "비밀번호는 문자와 숫자를 모두 포함하고, 6자 이상이어야 합니다"),
       // nameValidator: ValidatorModel(
       //     checkUpperCase: false, checkNumber: false, checkLowerCase: false, checkSpace: false,
       //     validatorCallback: (String? name) => "옳지 않은 이름 양식입니다."),
@@ -80,8 +85,13 @@ class _LoginScreenState extends State<LoginScreen> {
             return null;
           },
           validatorCallback: (String? name) => "옳지 않은 이름 양식입니다."),
+      // emailValidator: ValidatorModel(
+      //     validatorCallback: (String? email) => '옳지 않은 이메일 양식입니다'),
       emailValidator: ValidatorModel(
-          validatorCallback: (String? email) => '옳지 않은 이메일 양식입니다'),
+          customValidator: (password) {
+            return null;
+          },
+      ),
       // changeLanguageCallback: (LanguageOption? _language) {
       //   if (_language != null) {
       //     DialogBuilder(context).showResultDialog(

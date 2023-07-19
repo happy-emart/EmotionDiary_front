@@ -5,6 +5,8 @@ import 'widgets/emoticon_face.dart';
 import 'widgets/weather_radio.dart';
 import 'package:http/http.dart' as http;
 import 'widgets/get_jwt_token.dart';
+import 'tab_controller.dart';
+import 'main_sub.dart';
 
 String globalUrl = "http://localhost:8080";
 String modelUrl = "http://172.10.9.25:443/";
@@ -124,7 +126,6 @@ class _WritingPageState extends State<WritingPage> {
     var yesterday = DateTime.now().subtract(Duration(days: 1));
     var today = now.hour < 7 ? yesterday : now;
     var todayString = DateFormat("yyyy년 MM월 dd일").format(today);
-
 
     return Scaffold(
       body: SafeArea(
@@ -251,19 +252,23 @@ class _WritingPageState extends State<WritingPage> {
                         height: 10,
                       ),
                       OutlinedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           var diary = _diaryController.text;
-                          print(diary);
                           // send 
                           var body = {
                             // 'id': id,
                             'emotion': selectedButton,
-                            'diaryText': diary,
+                            'text': diary,
                             'weather': selectedButton,
                             'writtenDate': DateFormat("yyyy-MM-dd").format(today),
                           };
-                          sendDiary(body);
-                          Navigator.pop(context);
+                          await sendDiary(body);
+                          isDiaryWritten = true;
+                          // Navigator.pop(context);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => Controller()),
+                          );
                         },
                         child: Text(
                           "작성 완료",
@@ -347,7 +352,7 @@ class EmotionButtonScroll extends StatelessWidget {
   }
 }
 
-void sendDiary(Map<String, dynamic> body) async {
+Future<void> sendDiary(Map<String, dynamic> body) async {
   String springUrl = "$globalUrl/sent_letters";
   String flaskUrl = modelUrl;
   

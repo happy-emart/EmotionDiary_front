@@ -11,8 +11,29 @@ import 'package:flutter/rendering.dart';
 import 'dart:math' as math;
 import 'package:intl/intl.dart';
 import 'main_sub.dart';
+import 'widgets/calendar.dart';
+import 'widgets/diary.dart';
+import 'dart:collection';
+import 'package:table_calendar/table_calendar.dart';
 // import ''; smartRefresher
 
+bool isDiaryWritten = false;
+int _selectedIndex = 0;
+
+void isDiaryWrittenInit() async {
+  var now = DateTime.now();
+  var yesterday = DateTime.now().subtract(Duration(days: 1));
+  var today = now.hour < 7 ? yesterday : now;
+
+  Map<DateTime, Diary> eventSource = Map();
+  LinkedHashMap<DateTime, Diary> events = LinkedHashMap(
+    equals: isSameDay,
+  )..addAll(eventSource); 
+  var list = await getDateEventMap(today);
+  var map = convertListToMap(list);
+  events.addAll(map);
+  [events[DateTime.parse(DateFormat('yyyy-MM-dd').format(today))]].whereType<Diary>().toList()
+}
 class Controller extends StatefulWidget {
   const Controller({Key? key}) : super(key: key);
 
@@ -21,8 +42,9 @@ class Controller extends StatefulWidget {
 }
 
 class _ControllerState extends State<Controller> {
-  int _selectedIndex = 0;
   final PageController _pageController = PageController();
+
+  // isDiaryWritten;
 
   static List<Widget> _widgetOptions = <Widget>[
     MainPage(name: "영욱"),
