@@ -10,12 +10,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'get_jwt_token.dart';
 
-String baseUrl = 'http://localhost:8080';
+String baseUrl = 'http://10.0.2.2:8080';
 // String baseUrl = 'http://172.10.5.90:443';
 
 class TableCalendarScreen extends StatefulWidget {
-  TableCalendarScreen({Key? key, required this.selectedDay, required this.onDaySelected, required this.focusedDay}) : super(key: key);
-  
+  TableCalendarScreen(
+      {Key? key,
+      required this.selectedDay,
+      required this.onDaySelected,
+      required this.focusedDay})
+      : super(key: key);
+
   DateTime selectedDay;
   DateTime focusedDay;
   Function(DateTime, DateTime) onDaySelected;
@@ -42,7 +47,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
           var list = await getDateEventMap(DateTime.now());
           var map = convertListToMap(list);
           events.addAll(map);
-          if(mounted)
+          if (mounted)
             setState(() {}); // Trigger a rebuild after data is loaded
         },
         onPageChanged: (date) async {
@@ -58,7 +63,8 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
             color: Theme.of(context).colorScheme.onBackground,
             shape: BoxShape.circle,
           ),
-          weekendTextStyle: TextStyle(color: Theme.of(context).colorScheme.onBackground),
+          weekendTextStyle:
+              TextStyle(color: Theme.of(context).colorScheme.onBackground),
         ),
         eventLoader: getEventsForDay,
         headerStyle: HeaderStyle(
@@ -74,7 +80,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
           return isSameDay(widget.selectedDay, day);
         },
         onFormatChanged: (CalendarFormat format) {
-        setState(() {
+          setState(() {
             this.format = format;
           });
         },
@@ -89,12 +95,11 @@ Future<List<Diary>> getDateEventMap(DateTime date) async {
   final String Url = "$baseUrl/received_letters?writtenDate=$writtenDate";
   final jwtToken = await getJwtToken();
   final request = Uri.parse(Url);
-  final headers = <String, String> {
+  final headers = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
     'Authorization': 'Bearer $jwtToken'
   };
-  try
-  {
+  try {
     List<Diary> diaryList = [];
     final response = await http.get(request, headers: headers);
     var json = jsonDecode(response.body);
@@ -102,9 +107,7 @@ Future<List<Diary>> getDateEventMap(DateTime date) async {
       diaryList.add(Diary.fromJson(diaryJson));
     }
     return diaryList;
-  }
-  catch(error)
-  {
+  } catch (error) {
     print('error : $error');
   }
   return [];
@@ -126,10 +129,12 @@ Map<DateTime, Diary> eventSource = Map();
 
 LinkedHashMap<DateTime, Diary> events = LinkedHashMap(
   equals: isSameDay,
-)..addAll(eventSource); 
+)..addAll(eventSource);
 
 List<Diary?> getEventsForDay(DateTime day) {
-  return [events[DateTime.parse(DateFormat('yyyy-MM-dd').format(day))]].whereType<Diary>().toList();
+  return [events[DateTime.parse(DateFormat('yyyy-MM-dd').format(day))]]
+      .whereType<Diary>()
+      .toList();
 }
 
 // Widget _buildMissionContainer (int index) {
