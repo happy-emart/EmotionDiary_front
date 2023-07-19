@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:wrapped_korean_text/wrapped_korean_text.dart';
 import 'tab_controller.dart';
+import 'page_recording.dart';
 // import ''; smartRefresher
 
   // void _moveToDashboard() {
@@ -177,7 +178,15 @@ class _MainPageState extends State<MainPage> {
                                   // SizedBox(height: 15,),
                                   // getContentsBox(context, LineIcons.robot, "AI 감정 통계", "AI는 내 일기를 어떻게 분석했을까요?"),
                                   SizedBox(height: 15,),
-                                  getContentsBox(context, LineIcons.microphone, "음성으로 기록하기", "때로는, 색다른 일기도 재밌을 거예요"),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => RecordingPage())
+                                      );
+                                    },
+                                    child: getContentsBox(context, LineIcons.microphone, "음성으로 기록하기", "때로는, 색다른 일기도 재밌을 거예요")
+                                  ),
                                 ],
                               ),
                             ),
@@ -201,7 +210,7 @@ class _MainPageState extends State<MainPage> {
   InkWell buildEmoticonButton(BuildContext context, TextStyle emoticonText, String emoticon, String emotionDescription, int emotionToInt) {
     return InkWell(
     onTap:() {
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => WritingPage(emotion: emotionToInt,)));
     },

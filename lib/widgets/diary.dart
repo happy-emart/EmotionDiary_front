@@ -8,12 +8,12 @@ class Diary {
   final String writtenDate;
 
   Diary({required this.emotion, required this.weather, required this.diaryText, required this.writtenDate});
-
+  int characterLimit = 200;
   @override
   String toString() => 
-    diaryText.length <= 20
+    diaryText.length <= characterLimit
       ? "글: $diaryText"
-      : "글: "+diaryText.substring(0, 200) + '...';
+      : "글: "+diaryText.substring(0, characterLimit) + '...';
 
   String toWeather() {
     switch (weather) {

@@ -8,8 +8,8 @@ import 'widgets/emotion_converter.dart';
 import 'package:emotion_diary/widgets/calendar.dart';
 import 'package:emotion_diary/widgets/diary.dart';
 
-// String globalUrl = "http://localhost";
-String globalUrl = 'http://172.10.5.90:443';
+String globalUrl = "http://localhost:8080";
+// String globalUrl = 'http://172.10.5.90:443';
 String modelUrl = "http://172.10.9.25:80/";
 
 class ReadingPage extends StatefulWidget {

@@ -8,26 +8,28 @@ import 'package:http/http.dart' as http;
 import 'widgets/get_jwt_token.dart';
 import 'tab_controller.dart';
 import 'main_sub.dart';
-import 'widgets/show_custom_toast.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 String globalUrl = "http://localhost:8080";
 // String globalUrl= 'http://172.10.5.90:443';
 String modelUrl = "http://172.10.9.25:80/";
 
-class WritingPage extends StatefulWidget {
-  int emotion;
-  WritingPage({Key? key, required this.emotion}) : super(key: key);
+class RecordingPage extends StatefulWidget {
+  RecordingPage({Key? key}) : super(key: key);
 
   @override
-  State<WritingPage> createState() => _WritingPageState();
+  State<RecordingPage> createState() => _RecordingPageState();
 }
 
-class _WritingPageState extends State<WritingPage> {
-  final TextEditingController _diaryController = TextEditingController();
-  final TextEditingController _eventController = TextEditingController();
+class _RecordingPageState extends State<RecordingPage> {
+  final recorder = FlutterSoundRecorder();
   final ScrollController _scrollController = ScrollController();
-  late int selectedButton = widget.emotion;
+  late int selectedButton = -1;
   int selectedRadioIndex = 0;
+  bool isRecorderReady = false;
   void toggleSelection(int buttonNumber) {
     if (selectedButton == buttonNumber) return;
     setState(() {
@@ -35,19 +37,13 @@ class _WritingPageState extends State<WritingPage> {
     });
   }
 
-  @override
-  void dispose() {
-    _diaryController.dispose();
-    super.dispose();
-  }
-
   var emoticonText =
-  TextStyle(
-    fontFamily: "bookk",
-    fontWeight: FontWeight.w400,
-    fontSize: 14,
-    color: Colors.white,
-  );
+    TextStyle(
+      fontFamily: "bookk",
+      fontWeight: FontWeight.w400,
+      fontSize: 14,
+      color: Colors.white,
+    );
 
   Widget buildButton(int buttonNumber, String emotionText, String emotionDescription) {
     return Column(
@@ -93,23 +89,60 @@ class _WritingPageState extends State<WritingPage> {
     );
   }
 
+  Future record() async {
+    if (!isRecorderReady) return;
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      final path = '${dir.path}/audio.aac'; // change the extension based on the codec you're using
+      // print("------------");
+      // print(dir);
+      // print("------------");
+      await recorder.startRecorder(toFile: path);
+    } catch (e) {
+      print('Error starting recorder: $e');
+    }
+  }
+
+  Future stop() async {
+    if (!isRecorderReady) return;
+    try {
+      final path = await recorder.stopRecorder();
+      final audioFile = File(path!); // audioFile == refernce to audio file
+      
+      // print('Recorded audio: $audioFile');
+    } catch (e) {
+      print('Error stopping recorder: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initRecorder();
+  }
+
+  @override
+  void dispose() {
+    recorder.closeRecorder();
+    super.dispose();
+  }
+
+  Future initRecorder() async {
+    final status = await Permission.microphone.request();
+
+    if (status != PermissionStatus.granted) {
+      throw '필요한 권한을 얻지 못했습니다.';
+    }
+    
+    await recorder.openRecorder();
+    isRecorderReady = true;
+    recorder.setSubscriptionDuration(
+      const Duration(milliseconds: 500),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // var happyEmoticon = ElevatedButton(
-    //   onPressed: () {},
-    //   child: Column(
-    //     children: [
-    //       EmoticonFace2(
-    //         emoticonface: '😆'
-    //       ),
-    //       SizedBox(height: 8,),
-    //       Text(
-    //         "좋아요",
-    //         style: emoticonText,
-    //       ),
-    //     ],
-    //   ),
-    // );
     var neutralEmoticon = buildButton(0, '🙂', "중립이에요");
     var happyEmoticon = buildButton(1, '😆', "행복해요");
     var sadEmoticon = buildButton(2, '😢', "슬퍼요");
@@ -210,80 +243,111 @@ class _WritingPageState extends State<WritingPage> {
                             // SizedBox(
                             //   height: 10,
                             // ),
-                            RadioButtonWidget1(selectedRadioIndex: selectedRadioIndex),
+                            RadioButtonWidget1(selectedRadioIndex: selectedRadioIndex,),
                           ],
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
-                      Column(
-                        children: [
-                          Form(
-                            child: Column(
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            width: 2,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          )
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                TextField(
-                                  controller: _diaryController,
-                                  maxLines: null, // Allows the TextField to expand vertically as needed
-                                  decoration: const InputDecoration(
-                                    hintStyle: TextStyle(
-                                      fontFamily: "mainfont",
-                                      fontSize: 15,
+                                Text(
+                                      "녹음하기",
+                                      style: TextStyle(
+                                        fontFamily: "bookk",
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 18,
+                                      ),
                                     ),
-                                    hintText: '여기에 일기를 써 주세요',
-                                    border: OutlineInputBorder(),
+                                // ,
+                              ]
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                StreamBuilder<RecordingDisposition>(
+                                  stream: recorder.onProgress,
+                                  builder: (context, snapshot) {
+                                    final duration = snapshot.hasData
+                                      ? snapshot.data!.duration
+                                      : Duration.zero;
+                                    String twoDigits(int n) => n.toString().padLeft(2, '0');
+                                    final twoDigitMinutes =
+                                      twoDigits(duration.inMinutes.remainder(60));
+                                    final twoDigitSeconds =
+                                      twoDigits(duration.inSeconds.remainder(60));
+
+                                    return Text(
+                                      '$twoDigitMinutes:$twoDigitSeconds',
+                                      style: const TextStyle(
+                                        fontSize: 60,
+                                        fontFamily: 'bookk',
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(height: 10,),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    if (recorder.isRecording) {
+                                      await stop();
+                                    } else {
+                                      await record();
+                                    }
+
+                                    setState(() {});
+                                  },
+                                  child: Icon(
+                                    recorder.isRecording ? Icons.stop : Icons.mic,
+                                    size: 80,
+                                    color: Theme.of(context).colorScheme.background,
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Column(
-                        children: [
-                          TextField(
-                            controller: _diaryController,
-                            maxLines: null, // Allows the TextField to expand vertically as needed
-                            decoration: const InputDecoration(
-                              hintStyle: TextStyle(
-                                fontFamily: "mainfont",
-                                fontSize: 15,
-                              ),
-                              hintText: '사건 해시태그(미정)',
-                              border: OutlineInputBorder(),
+                            SizedBox(
+                              height: 10,
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
+                          ],
+                        ),
                       ),
                       OutlinedButton(
                         onPressed: () async {
-                          if (_diaryController.text.isNotEmpty) {
-                            var diary = _diaryController.text;
+                            // var diary = API에서 받아온 text data;
+
                             // send 
-                            var emotion = emotionConverter(selectedButton);
                             var body = {
                               // 'id': id,
-                              'emotion': emotion,
-                              'text': diary,
+                              'emotion': emotionConverter(selectedButton),
+                              'text': "시험 중입니다.",
                               'weather': selectedRadioIndex,
                               'writtenDate': DateFormat("yyyy-MM-dd").format(today),
                             };
-                            await sendDiary(body);
+                            // await sendDiary(body); -> 완성되면 주석 풀기
                             isDiaryWritten = true;
                             Navigator.pop(context);
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => Controller()),
-                            );
-                          } else {
-                            showCustomToast(context, "편지 내용이 비었습니다");
-                          }
+                            // Navigator.pushReplacement(
+                            //   context,
+                            //   MaterialPageRoute(builder: (context) => Controller()
+                            //   ),
+                            // ); -> 완성되면 위의 .pop과 주석 교체
                         },
                         child: Text(
                           "작성 완료",

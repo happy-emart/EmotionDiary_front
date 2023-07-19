@@ -9,8 +9,8 @@ import 'main_sub.dart';
 import 'dialog_builders.dart';
 import 'login_kakao.dart';
 
-// String baseUrl = "http://localhost:8080";
-String baseUrl = 'http://172.10.5.90:443';
+String baseUrl = "http://localhost:8080";
+// String baseUrl = 'http://172.10.5.90:443';
 
 
 class LoginFunctions {
