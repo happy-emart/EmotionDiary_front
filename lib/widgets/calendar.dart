@@ -11,12 +11,17 @@ import 'dart:convert';
 import 'get_jwt_token.dart';
 import 'functions_diary.dart';
 
-String baseUrl = 'http://localhost:8080';
+String baseUrl = 'http://10.0.2.2:8080';
 // String baseUrl = 'http://172.10.5.90:443';
 
 class TableCalendarScreen extends StatefulWidget {
-  TableCalendarScreen({Key? key, required this.selectedDay, required this.onDaySelected, required this.focusedDay}) : super(key: key);
-  
+  TableCalendarScreen(
+      {Key? key,
+      required this.selectedDay,
+      required this.onDaySelected,
+      required this.focusedDay})
+      : super(key: key);
+
   DateTime selectedDay;
   DateTime focusedDay;
   Function(DateTime, DateTime) onDaySelected;
@@ -43,7 +48,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
           var list = await getDateEventMap(DateTime.now());
           var map = convertListToMap(list);
           events.addAll(map);
-          if(mounted)
+          if (mounted)
             setState(() {}); // Trigger a rebuild after data is loaded
         },
         onPageChanged: (date) async {
@@ -59,7 +64,8 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
             color: Theme.of(context).colorScheme.onBackground,
             shape: BoxShape.circle,
           ),
-          weekendTextStyle: TextStyle(color: Theme.of(context).colorScheme.onBackground),
+          weekendTextStyle:
+              TextStyle(color: Theme.of(context).colorScheme.onBackground),
         ),
         eventLoader: getEventsForDay,
         headerStyle: HeaderStyle(
@@ -75,7 +81,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
           return isSameDay(widget.selectedDay, day);
         },
         onFormatChanged: (CalendarFormat format) {
-        setState(() {
+          setState(() {
             this.format = format;
           });
         },

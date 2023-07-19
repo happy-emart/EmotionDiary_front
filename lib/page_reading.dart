@@ -9,7 +9,7 @@ import 'package:emotion_diary/widgets/calendar.dart';
 import 'package:emotion_diary/widgets/diary.dart';
 import 'widgets/functions_diary.dart';
 
-String globalUrl = "http://localhost:8080";
+String globalUrl = "http://10.0.2.2:8080";
 // String globalUrl = 'http://172.10.5.90:443';
 String modelUrl = "http://172.10.9.25:80/";
 
@@ -22,9 +22,7 @@ class ReadingPage extends StatefulWidget {
 }
 
 class _ReadingPageState extends State<ReadingPage> {
-
-  var emoticonText =
-  TextStyle(
+  var emoticonText = TextStyle(
     fontFamily: "bookk",
     fontWeight: FontWeight.w400,
     fontSize: 18,
@@ -35,7 +33,13 @@ class _ReadingPageState extends State<ReadingPage> {
   Widget build(BuildContext context) {
     var selectedDay = widget.writtenDate;
     var selectedDayString = DateFormat("yyyy년 MM월 dd일").format(selectedDay);
-    Diary? eventsForDay = getEventsForDay(widget.writtenDate).isNotEmpty ? getEventsForDay(widget.writtenDate)[0] : Diary(emotion: '100', weather: '100', diaryText: "일기를 쓰지 않은 날입니다.", writtenDate: "2001-01-01");
+    Diary? eventsForDay = getEventsForDay(widget.writtenDate).isNotEmpty
+        ? getEventsForDay(widget.writtenDate)[0]
+        : Diary(
+            emotion: '100',
+            weather: '100',
+            diaryText: "일기를 쓰지 않은 날입니다.",
+            writtenDate: "2001-01-01");
 
     return Scaffold(
       body: SafeArea(
@@ -52,18 +56,19 @@ class _ReadingPageState extends State<ReadingPage> {
                         "▷ $selectedDayString자 일기입니다",
                         style: emoticonText,
                       ),
-                      SizedBox(height: 15,),
+                      SizedBox(
+                        height: 15,
+                      ),
                       Container(
                         alignment: Alignment.center,
                         // height: 165,
                         padding: EdgeInsets.all(15),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            width: 1,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          )
-                        ),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              width: 1,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            )),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -131,12 +136,11 @@ class _ReadingPageState extends State<ReadingPage> {
                       Container(
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            width: 2,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          )
-                        ),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              width: 2,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            )),
                         child: Column(
                           children: [
                             Row(
@@ -191,10 +195,8 @@ class _ReadingPageState extends State<ReadingPage> {
                                     fontWeight: FontWeight.w400,
                                     fontSize: 18,
                                   ),
-                                ),
-                                // ,
-                              ]
-                            ),
+                                )
+                                ]),
                             // SizedBox(
                             //   height: 10,
                             // ),
@@ -219,13 +221,20 @@ class _ReadingPageState extends State<ReadingPage> {
 
 int emotionConverter(int emotion) {
   switch (emotion) {
-    case 0: return 4;
-    case 1: return 5;
-    case 2: return 3;
-    case 3: return 2;
-    case 4: return 0;
-    case 5: return 1;
-    case 6: return 6;
+    case 0:
+      return 4;
+    case 1:
+      return 5;
+    case 2:
+      return 3;
+    case 3:
+      return 2;
+    case 4:
+      return 0;
+    case 5:
+      return 1;
+    case 6:
+      return 6;
   }
   return 0;
 }
@@ -257,40 +266,36 @@ class EmotionButtonScroll extends StatelessWidget {
     return SingleChildScrollView(
       controller: _scrollController,
       scrollDirection: Axis.horizontal,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(5,0,5,0),
-            child: neutralEmoticon,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(5,0,5,0),
-            child: happyEmoticon,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(5,0,5,0),
-            child: sadEmoticon,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(5,0,5,0),
-            child: angryEmoticon,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(5,0,5,0),
-            child: scaredEmoticon,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(5,0,5,0),
-            child: embrassedEmoticon,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(5,0,5,0),
-            child: hateEmoticon,
-          ),
-
-        ]
-      ),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+          child: neutralEmoticon,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+          child: happyEmoticon,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+          child: sadEmoticon,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+          child: angryEmoticon,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+          child: scaredEmoticon,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+          child: embrassedEmoticon,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+          child: hateEmoticon,
+        ),
+      ]),
     );
   }
 }
@@ -298,27 +303,25 @@ class EmotionButtonScroll extends StatelessWidget {
 void sendDiary(Map<String, dynamic> body) async {
   String springUrl = "$globalUrl/sent_letters";
   String flaskUrl = modelUrl;
-  
+
   final request = Uri.parse(springUrl);
   // final jwtToken = await getJwtToken();
   // final headers = <String, String> {
   //   'Content-Type': 'application/json; charset=UTF-8',
   //   'Authorization': 'Bearer $jwtToken'
   // };
-  final headers = <String, String> {
+  final headers = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
   };
-  try
-    {
-      final response = await http.post(request, headers: headers, body: json.encode(body));
-      print(json.encode(body));
-      print(response.body);
-    }
-    catch(error)
-    {
-      print('error : $error');
-    }
+  try {
+    final response =
+        await http.post(request, headers: headers, body: json.encode(body));
+    print(json.encode(body));
+    print(response.body);
+  } catch (error) {
+    print('error : $error');
   }
+}
 
 // Future<String?> getJwtToken() async {
 //   SharedPreferences prefs = await SharedPreferences.getInstance();

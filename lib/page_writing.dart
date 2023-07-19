@@ -10,7 +10,7 @@ import 'tab_controller.dart';
 import 'main_sub.dart';
 import 'widgets/show_custom_toast.dart';
 
-String globalUrl = "http://localhost:8080";
+String globalUrl = "http://10.0.2.2:8080";
 // String globalUrl= 'http://172.10.5.90:443';
 String modelUrl = "http://172.10.9.25:80/";
 int selectedRadioIndex = 0;
@@ -42,15 +42,15 @@ class _WritingPageState extends State<WritingPage> {
     super.dispose();
   }
 
-  var emoticonText =
-  TextStyle(
+  var emoticonText = TextStyle(
     fontFamily: "bookk",
     fontWeight: FontWeight.w400,
     fontSize: 14,
     color: Colors.white,
   );
 
-  Widget buildButton(int buttonNumber, String emotionText, String emotionDescription) {
+  Widget buildButton(
+      int buttonNumber, String emotionText, String emotionDescription) {
     return Column(
       children: [
         SizedBox(
@@ -62,30 +62,32 @@ class _WritingPageState extends State<WritingPage> {
             },
             style: ButtonStyle(
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  // sid,
-                )
-              ),
-              backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
+                  RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+                // sid,
+              )),
+              backgroundColor:
+                  MaterialStateProperty.resolveWith<Color>((states) {
                 if (selectedButton == buttonNumber) {
                   return Theme.of(context).colorScheme.onPrimary; // 선택된 버튼의 배경색
                 } else {
-                  return Theme.of(context).colorScheme.background; // 선택되지 않은 버튼의 배경색
+                  return Theme.of(context)
+                      .colorScheme
+                      .background; // 선택되지 않은 버튼의 배경색
                 }
               }),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                EmoticonFace2(
-                  emoticonface: emotionText
-                ),
+                EmoticonFace2(emoticonface: emotionText),
               ],
             ),
           ),
         ),
-        SizedBox(height: 8,),
+        SizedBox(
+          height: 8,
+        ),
         Text(
           emotionDescription,
           style: emoticonText,
@@ -119,12 +121,21 @@ class _WritingPageState extends State<WritingPage> {
     var embrassedEmoticon = buildButton(5, '😵‍💫', "당황했어요");
     var hateEmoticon = buildButton(6, '😒', "싫어요");
 
-    var emoticonButtonScroll = EmotionButtonScroll(scrollController: _scrollController, neutralEmoticon: neutralEmoticon, happyEmoticon: happyEmoticon, sadEmoticon: sadEmoticon, angryEmoticon: angryEmoticon, scaredEmoticon: scaredEmoticon, embrassedEmoticon: embrassedEmoticon, hateEmoticon: hateEmoticon);
-  
+    var emoticonButtonScroll = EmotionButtonScroll(
+        scrollController: _scrollController,
+        neutralEmoticon: neutralEmoticon,
+        happyEmoticon: happyEmoticon,
+        sadEmoticon: sadEmoticon,
+        angryEmoticon: angryEmoticon,
+        scaredEmoticon: scaredEmoticon,
+        embrassedEmoticon: embrassedEmoticon,
+        hateEmoticon: hateEmoticon);
+
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
         if (selectedButton > 3)
-        _scrollController.animateTo(200.0, duration: Duration(milliseconds: 500), curve: Curves.ease);
+          _scrollController.animateTo(200.0,
+              duration: Duration(milliseconds: 500), curve: Curves.ease);
       }
     });
     var now = DateTime.now();
@@ -143,35 +154,33 @@ class _WritingPageState extends State<WritingPage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Text(
-                        "▷ $todayString자 일기를 작성합니다"
+                      Text("▷ $todayString자 일기를 작성합니다"),
+                      SizedBox(
+                        height: 10,
                       ),
-                      SizedBox(height: 10,),
                       Container(
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            width: 2,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          )
-                        ),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              width: 2,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            )),
                         child: Column(
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                      "오늘의 기분",
-                                      style: TextStyle(
-                                        fontFamily: "bookk",
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 18,
-                                      ),
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "오늘의 기분",
+                                    style: TextStyle(
+                                      fontFamily: "bookk",
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18,
                                     ),
-                                // ,
-                              ]
-                            ),
+                                  ),
+                                  // ,
+                                ]),
                             SizedBox(
                               height: 10,
                             ),
@@ -186,28 +195,26 @@ class _WritingPageState extends State<WritingPage> {
                       Container(
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            width: 2,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          )
-                        ),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              width: 2,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            )),
                         child: Column(
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                      "날씨",
-                                      style: TextStyle(
-                                        fontFamily: "bookk",
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 18,
-                                      ),
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "날씨",
+                                    style: TextStyle(
+                                      fontFamily: "bookk",
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18,
                                     ),
-                                // ,
-                              ]
-                            ),
+                                  ),
+                                  // ,
+                                ]),
                             // SizedBox(
                             //   height: 10,
                             // ),
@@ -225,7 +232,8 @@ class _WritingPageState extends State<WritingPage> {
                               children: [
                                 TextField(
                                   controller: _diaryController,
-                                  maxLines: null, // Allows the TextField to expand vertically as needed
+                                  maxLines:
+                                      null, // Allows the TextField to expand vertically as needed
                                   decoration: const InputDecoration(
                                     hintStyle: TextStyle(
                                       fontFamily: "mainfont",
@@ -247,7 +255,8 @@ class _WritingPageState extends State<WritingPage> {
                         children: [
                           TextField(
                             controller: _diaryController,
-                            maxLines: null, // Allows the TextField to expand vertically as needed
+                            maxLines:
+                                null, // Allows the TextField to expand vertically as needed
                             decoration: const InputDecoration(
                               hintStyle: TextStyle(
                                 fontFamily: "mainfont",
@@ -266,7 +275,7 @@ class _WritingPageState extends State<WritingPage> {
                         onPressed: () async {
                           if (_diaryController.text.isNotEmpty) {
                             var diary = _diaryController.text;
-                            // send 
+                            // send
                             var emotion = emotionConverter(selectedButton);
                             print(selectedRadioIndex);
                             var body = {
@@ -274,14 +283,16 @@ class _WritingPageState extends State<WritingPage> {
                               'emotion': emotion,
                               'text': diary,
                               'weather': selectedRadioIndex,
-                              'writtenDate': DateFormat("yyyy-MM-dd").format(today),
+                              'writtenDate':
+                                  DateFormat("yyyy-MM-dd").format(today),
                             };
                             await sendDiary(body);
                             isDiaryWritten = true;
                             Navigator.pop(context);
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (context) => Controller()),
+                              MaterialPageRoute(
+                                  builder: (context) => Controller()),
                             );
                           } else {
                             showCustomToast(context, "편지 내용이 비었습니다");
@@ -331,40 +342,36 @@ class EmotionButtonScroll extends StatelessWidget {
     return SingleChildScrollView(
       controller: _scrollController,
       scrollDirection: Axis.horizontal,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(5,0,5,0),
-            child: neutralEmoticon,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(5,0,5,0),
-            child: happyEmoticon,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(5,0,5,0),
-            child: sadEmoticon,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(5,0,5,0),
-            child: angryEmoticon,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(5,0,5,0),
-            child: scaredEmoticon,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(5,0,5,0),
-            child: embrassedEmoticon,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(5,0,5,0),
-            child: hateEmoticon,
-          ),
-
-        ]
-      ),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+          child: neutralEmoticon,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+          child: happyEmoticon,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+          child: sadEmoticon,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+          child: angryEmoticon,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+          child: scaredEmoticon,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+          child: embrassedEmoticon,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+          child: hateEmoticon,
+        ),
+      ]),
     );
   }
 }
@@ -372,27 +379,25 @@ class EmotionButtonScroll extends StatelessWidget {
 Future<void> sendDiary(Map<String, dynamic> body) async {
   String springUrl = "$globalUrl/sent_letters";
   String flaskUrl = modelUrl;
-  
+
   final requestSpring = Uri.parse(springUrl);
   final requestFlask = Uri.parse(flaskUrl);
   final jwtToken = await getJwtToken();
-  final headersSpring = <String, String> {
+  final headersSpring = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
     'Authorization': 'Bearer $jwtToken'
   };
-  final headersFlask = <String, String> {
+  final headersFlask = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
   };
-  try
-    {
-      final responseSpring = await http.post(requestSpring, headers: headersSpring, body: json.encode(body));
-      final responseFlask = await http.post(requestFlask, headers: headersFlask, body: json.encode(body));
-      // print(json.encode(body));
-      print(responseFlask.body);
-      
-    }
-  catch(error)
-  {
+  try {
+    final responseSpring = await http.post(requestSpring,
+        headers: headersSpring, body: json.encode(body));
+    final responseFlask = await http.post(requestFlask,
+        headers: headersFlask, body: json.encode(body));
+    // print(json.encode(body));
+    print(responseFlask.body);
+  } catch (error) {
     print('error : $error');
   }
 }

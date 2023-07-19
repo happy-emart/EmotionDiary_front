@@ -1,17 +1,13 @@
 import 'dart:convert';
 import 'package:animated_login/animated_login.dart';
-import 'package:emotion_diary/tab_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:emotion_diary/login_kakao.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'main_sub.dart';
 import 'dialog_builders.dart';
-import 'login_kakao.dart';
 
-String baseUrl = "http://localhost:8080";
+String baseUrl = "http://143.248.192.51:4040";
 // String baseUrl = 'http://172.10.5.90:443';
-
 
 class LoginFunctions {
   /// Collection of functions will be performed on login/signup.
@@ -19,12 +15,11 @@ class LoginFunctions {
   const LoginFunctions(this.context);
   final BuildContext context;
 
-
   /// Login action that will be performed on click to action button in login mode.
   Future<String?> onLogin(LoginData loginData) async {
     // var isSuccessed = _login(loginData.email, loginData.password, context);
     // await Future.delayed(const Duration(seconds: 2));
-    // if (isSuccessed == "true") return "로그인에 성공했습니다." 
+    // if (isSuccessed == "true") return "로그인에 성공했습니다."
     // else return null;
     var str = await _login(loginData.email, loginData.password, context);
     await Future.delayed(const Duration(seconds: 2));
@@ -36,7 +31,8 @@ class LoginFunctions {
     if (signupData.password != signupData.confirmPassword) {
       return '비밀번호가 일치하지 않습니다.';
     }
-    var str = await _signup(signupData.email, signupData.password, signupData.name);
+    var str =
+        await _signup(signupData.email, signupData.password, signupData.name);
     await Future.delayed(const Duration(seconds: 2));
     return str;
   }
@@ -65,7 +61,7 @@ class LoginFunctions {
 Future<String?> _login(String id, String pw, BuildContext context) async {
   final String Url = "$baseUrl/auth";
   final request = Uri.parse(Url);
-  var headers = <String, String> {
+  var headers = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
   };
 
@@ -76,41 +72,35 @@ Future<String?> _login(String id, String pw, BuildContext context) async {
 
   http.Response response;
   try {
-    response = await http.post(request, headers: headers, body: json.encode(body));
-    if(response.statusCode == 200)
-    {
+    response =
+        await http.post(request, headers: headers, body: json.encode(body));
+    if (response.statusCode == 200) {
       storeJwtToken(response.body);
       await Future.delayed(const Duration(seconds: 2));
       // startFirstPage(context);
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MainAppSub()),
+        MaterialPageRoute(builder: (context) => const MainAppSub()),
       );
       return null;
-    }
-    else
-    {
+    } else {
       final error = json.decode(response.body);
       print('Request failed with status: $error');
       return "이메일과 비밀번호가 일치하지 않거나, 가입하지 않은 회원입니다.";
     }
-  } 
-  catch(error)
-    {
-      print('error : $error');
-      return "이메일과 비밀번호가 일치하지 않거나, 가입하지 않은 회원입니다.";
-      // return "서버와 연결 시도 중 문제가 발생했습니다.";
-    }
-
+  } catch (error) {
+    print('error : $error');
+    return "이메일과 비밀번호가 일치하지 않거나, 가입하지 않은 회원입니다.";
+    // return "서버와 연결 시도 중 문제가 발생했습니다.";
+  }
 
   return null;
-
 }
 
 Future<String> _signup(String id, String pw, String username) async {
   final String Url = "$baseUrl/signup";
   final request = Uri.parse(Url);
-  var headers = <String, String> {
+  var headers = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
   };
 
@@ -122,25 +112,21 @@ Future<String> _signup(String id, String pw, String username) async {
 
   http.Response response;
   try {
-  response = await http.post(request, headers: headers, body: json.encode(body));
-    if(response.statusCode == 200)
-    {
+    response =
+        await http.post(request, headers: headers, body: json.encode(body));
+    if (response.statusCode == 200) {
       await Future.delayed(const Duration(seconds: 2));
       print('Signup completed!');
       return "회원가입을 완료했습니다.";
-    }
-    else
-    {
+    } else {
       print('Signup failed with status');
       // return "서버와 연결 시도 중 문제가 발생했습니다.";
       return "서버 문제일지도?";
     }
-  } 
-  catch(error)
-    {
-      print('error : $error');
-      return "서버와 연결 시도 중 문제가 발생했습니다.";
-    }
+  } catch (error) {
+    print('error : $error');
+    return "서버와 연결 시도 중 문제가 발생했습니다.";
+  }
 }
 
 Future<void> storeJwtToken(String token) async {
