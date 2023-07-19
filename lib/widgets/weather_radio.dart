@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:emotion_diary/page_writing.dart';
 
 enum Weather { Sunny, Cloudy, Rainy }
 
 class RadioButtonWidget1 extends StatefulWidget {
-  RadioButtonWidget1({Key? key, required this.selectedRadioIndex}) : super(key: key);
-  int selectedRadioIndex;
+  const RadioButtonWidget1({Key? key}) : super(key: key);
   @override
   State<RadioButtonWidget1> createState() => _RadioButtonWidget1State();
 }
@@ -43,7 +43,7 @@ class _RadioButtonWidget1State extends State<RadioButtonWidget1> {
               onChanged: (Weather? value) {
                 setState(() {
                   _weather = value;
-                  widget.selectedRadioIndex = 0;
+                  selectedRadioIndex = 0;
                 });
               },
             ),
@@ -58,9 +58,9 @@ class _RadioButtonWidget1State extends State<RadioButtonWidget1> {
               onChanged: (Weather? value) {
                 setState(() {
                   _weather = value;
-                  widget.selectedRadioIndex = 1;
+                  selectedRadioIndex = 1;
                   print("흐리대요");
-                  print(widget.selectedRadioIndex);
+                  print(selectedRadioIndex);
                 });
               },
             ),
@@ -75,7 +75,7 @@ class _RadioButtonWidget1State extends State<RadioButtonWidget1> {
               onChanged: (Weather? value) {
                 setState(() {
                   _weather = value;
-                  widget.selectedRadioIndex = 2;
+                  selectedRadioIndex = 2;
                 });
               },
             ),

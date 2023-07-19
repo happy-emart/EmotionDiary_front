@@ -21,7 +21,6 @@ class Probability {
     });
 
   factory Probability.fromJson(Map<String, dynamic> json) {
-    var probabilityList = json["probability"];
     // return Probability(
     //     scared: json['scared'],
     //     embrassed: json['embrassed'],
@@ -32,13 +31,13 @@ class Probability {
     //     hate: json['hate'],
     // );
     return Probability(
-        scared: probabilityList[0],
-        embrassed: probabilityList[1],
-        angry: probabilityList[2],
-        sad: probabilityList[3],
-        neutral: probabilityList[4],
-        happy: probabilityList[5],
-        hate: probabilityList[6],
+        scared: json["probability"][0],
+        embrassed: json["probability"][1],
+        angry: json["probability"][2],
+        sad: json["probability"][3],
+        neutral: json["probability"][4],
+        happy: json["probability"][5],
+        hate: json["probability"][6],
     );
   }
 }

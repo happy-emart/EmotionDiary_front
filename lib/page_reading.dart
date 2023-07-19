@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'widgets/emotion_converter.dart';
 import 'package:emotion_diary/widgets/calendar.dart';
 import 'package:emotion_diary/widgets/diary.dart';
+import 'widgets/functions_diary.dart';
 
 String globalUrl = "http://localhost:8080";
 // String globalUrl = 'http://172.10.5.90:443';
@@ -72,32 +73,49 @@ class _ReadingPageState extends State<ReadingPage> {
                                   "오늘의 기분",
                                   style: TextStyle(
                                     fontFamily: "bookk",
-                                    fontWeight: FontWeight.w400,
+                                    fontWeight: FontWeight.w700,
                                     fontSize: 18,
                                   ),
                                 ),
-                                Text(
-                                  "오늘의 기분",
-                                  style: TextStyle(
-                                    fontFamily: "bookk",
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 18,
+                                SizedBox(height: 8,),
+                                Column(
+                                children: [
+                                  EmoticonFace(
+                                    emoticonface: eventsForDay!.toEmotionEmoji()
                                   ),
+                                  SizedBox(height: 8,),
+                                  Text(
+                                    eventsForDay!.toEmotion(),
+                                    style: emoticonText
+                                  ),
+                                ],
                                 ),
                               ],
                             ),
                             Column(
                               children: [
                                 Text(
-                                  "날씨",
+                                  "오늘의 날씨",
                                   style: TextStyle(
                                     fontFamily: "bookk",
-                                    fontWeight: FontWeight.w400,
+                                    fontWeight: FontWeight.w700,
                                     fontSize: 18,
                                   ),
                                 ),
+                                SizedBox(height: 8,),
+                                Column(
+                                children: [
+                                  EmoticonFace(
+                                    emoticonface: eventsForDay!.toWeatherEmoji()
+                                  ),
+                                  SizedBox(height: 8,),
+                                  Text(
+                                    eventsForDay!.toWeather(),
+                                    style: emoticonText
+                                  ),
+                                ],
+                                ),
                               ],
-                              // 날씨 이미지
                             ),
                           ]
                         ),
@@ -110,6 +128,48 @@ class _ReadingPageState extends State<ReadingPage> {
                         height: 10,
                       ),
                       // selecting weather
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            width: 2,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          )
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "오늘의 일기",
+                                  style: TextStyle(
+                                    fontFamily: "bookk",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ]
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              eventsForDay!.toString(),
+                              style: TextStyle(
+                                fontFamily: "bookk",
+                                fontWeight: FontWeight.w400,
+                                fontSize: 18,
+                              ),
+                            ),
+
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Container(
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(

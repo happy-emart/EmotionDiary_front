@@ -12,8 +12,8 @@ class Diary {
   @override
   String toString() => 
     diaryText.length <= characterLimit
-      ? "글: $diaryText"
-      : "글: "+diaryText.substring(0, characterLimit) + '...';
+      ? diaryText
+      : diaryText.substring(0, characterLimit) + '...';
 
   String toWeather() {
     switch (weather) {
@@ -39,27 +39,27 @@ class Diary {
     return "데이터 없음";
   }
 
-  String toEmotion() {
+  String toEmotionEmoji() {
     switch (emotion) {
       case "0":
-        return "불안해요";
+        return "😰";
       case "1":
-        return "당황했어요";
+        return "😵‍💫";
       case "2":
-        return "화나요";
+        return "😠";
       case "3":
-        return "슬퍼요";
+        return "😢";
       case "4":
-        return "중립이에요";
+        return "🙂";
       case "5":
-        return "행복해요";
+        return "😆";
       case "6":
-        return "싫어요";
+        return "😒";
     }
     return "데이터 없음";
   }
 
-  String toEmotionEmoji() {
+  String toEmotion() {
     switch (emotion) {
       case "0":
         return "불안해요";

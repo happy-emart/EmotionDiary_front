@@ -15,6 +15,7 @@ import 'widgets/calendar.dart';
 import 'widgets/diary.dart';
 import 'dart:collection';
 import 'package:table_calendar/table_calendar.dart';
+import 'widgets/functions_diary.dart';
 // import ''; smartRefresher
 
 bool isDiaryWritten = false;

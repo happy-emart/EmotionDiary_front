@@ -13,6 +13,7 @@ import 'widgets/show_custom_toast.dart';
 String globalUrl = "http://localhost:8080";
 // String globalUrl= 'http://172.10.5.90:443';
 String modelUrl = "http://172.10.9.25:80/";
+int selectedRadioIndex = 0;
 
 class WritingPage extends StatefulWidget {
   int emotion;
@@ -27,7 +28,7 @@ class _WritingPageState extends State<WritingPage> {
   final TextEditingController _eventController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   late int selectedButton = widget.emotion;
-  int selectedRadioIndex = 0;
+  bool isLoading = false;
   void toggleSelection(int buttonNumber) {
     if (selectedButton == buttonNumber) return;
     setState(() {
@@ -210,7 +211,7 @@ class _WritingPageState extends State<WritingPage> {
                             // SizedBox(
                             //   height: 10,
                             // ),
-                            RadioButtonWidget1(selectedRadioIndex: selectedRadioIndex),
+                            RadioButtonWidget1(),
                           ],
                         ),
                       ),
@@ -267,6 +268,7 @@ class _WritingPageState extends State<WritingPage> {
                             var diary = _diaryController.text;
                             // send 
                             var emotion = emotionConverter(selectedButton);
+                            print(selectedRadioIndex);
                             var body = {
                               // 'id': id,
                               'emotion': emotion,

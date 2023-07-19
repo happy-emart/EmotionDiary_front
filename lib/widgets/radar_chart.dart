@@ -6,8 +6,8 @@ import 'package:emotion_diary/page_writing.dart'; // for emotionConverter(int em
 class EmotionRadarChart extends StatefulWidget {
   EmotionRadarChart({super.key, required this.todayProbability, required this.yesterdayProbability, required this.isMini});
 
-  Probability todayProbability;
-  Probability yesterdayProbability;
+  Probability? todayProbability;
+  Probability? yesterdayProbability;
   bool isMini = false;
   final gridColor = const Color.fromRGBO(243, 229, 245, 1);
   final titleColor = Colors.white;
@@ -339,26 +339,27 @@ class _EmotionRadarChartState extends State<EmotionRadarChart> {
         title: '오늘',
         color: widget.todayColor,
         values: [
-          widget.todayProbability.scared,
-          widget.todayProbability.embrassed,
-          widget.todayProbability.angry,
-          widget.todayProbability.sad,
-          widget.todayProbability.happy,
-          widget.todayProbability.neutral,
-          widget.todayProbability.hate,
+          widget.todayProbability!.neutral,
+          widget.todayProbability!.happy,
+          widget.todayProbability!.sad,
+          widget.todayProbability!.angry,
+          widget.todayProbability!.scared,
+          widget.todayProbability!.embrassed,
+          widget.todayProbability!.hate,
         ],
       ),
+      if (widget.yesterdayProbability != null)
       RawDataSet(
         title: '어제',
         color: widget.yesterdayColor,
         values: [
-          widget.yesterdayProbability.scared,
-          widget.yesterdayProbability.embrassed,
-          widget.yesterdayProbability.angry,
-          widget.yesterdayProbability.sad,
-          widget.yesterdayProbability.happy,
-          widget.yesterdayProbability.neutral,
-          widget.yesterdayProbability.hate,
+          widget.yesterdayProbability!.neutral,
+          widget.yesterdayProbability!.happy,
+          widget.yesterdayProbability!.sad,
+          widget.yesterdayProbability!.angry,
+          widget.yesterdayProbability!.scared,
+          widget.yesterdayProbability!.embrassed,
+          widget.yesterdayProbability!.hate,
         ],
       ),
     ];

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:emotion_diary/widgets/calendar.dart';
 import 'package:emotion_diary/widgets/diary.dart';
 import 'page_reading.dart';
+import 'widgets/functions_diary.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({Key? key}) : super(key: key);
@@ -90,13 +91,21 @@ class _CalendarPageState extends State<CalendarPage> {
                             color: Theme.of(context).colorScheme.onPrimary,
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(eventsForDay?.toEmotion()??""),
-                              Text(eventsForDay?.toWeather()??"일기를 쓰지 않은 날입니다"),
-                              Text(eventsForDay?.toString()??""),
-                            ],
+                          child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(eventsForDay?.toEmotion()??""),
+                                  ],
+                                ),
+                                Text(eventsForDay?.toWeather()??"일기를 쓰지 않은 날입니다"),
+                                Text(eventsForDay?.toString()??""),
+                              ],
+                            ),
                           ),
                         ),
                       ),

@@ -119,15 +119,15 @@ class _MainPageState extends State<MainPage> {
     );
     return SafeArea(
             child:
-              Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(25.0),
-                    child: SingleChildScrollView(
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(25.0),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           LayoutBuilder(
                             builder: (context, constraints) => 
@@ -194,15 +194,15 @@ class _MainPageState extends State<MainPage> {
                           ],
                       ),
                     ),
-                  ),
-                  // ClipRRect(
-                  //   borderRadius: BorderRadius.circular(25),
-                  //   child: Container(
-                  //     height: 100,
-                  //     color: Colors.white,
-                  //   ),
-                  // ),
-                ],
+                    // ClipRRect(
+                    //   borderRadius: BorderRadius.circular(25),
+                    //   child: Container(
+                    //     height: 100,
+                    //     color: Colors.white,
+                    //   ),
+                    // ),
+                  ],
+                ),
               ),
           );
   }

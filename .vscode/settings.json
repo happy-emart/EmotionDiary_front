@@ -1,3 +1,4 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "cmake.sourceDirectory": "/Users/yddook/ukgrade/madcamp/flutter/w3_diary_front/emotion_diary/linux/flutter"
 }

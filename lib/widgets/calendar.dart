@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'get_jwt_token.dart';
+import 'functions_diary.dart';
 
 String baseUrl = 'http://localhost:8080';
 // String baseUrl = 'http://172.10.5.90:443';
@@ -81,55 +82,6 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
       ),
     );
   }
-}
-
-Future<List<Diary>> getDateEventMap(DateTime date) async {
-  // 서버와 통신해 데이터를 받아온다 -> 일기 데이터와 감정 데이터 부분으로 분리하기
-  var writtenDate = DateFormat("yyyy-MM-dd").format(date);
-  final String Url = "$baseUrl/received_letters?writtenDate=$writtenDate";
-  final jwtToken = await getJwtToken();
-  final request = Uri.parse(Url);
-  final headers = <String, String> {
-    'Content-Type': 'application/json; charset=UTF-8',
-    'Authorization': 'Bearer $jwtToken'
-  };
-  try
-  {
-    List<Diary> diaryList = [];
-    final response = await http.get(request, headers: headers);
-    var json = jsonDecode(response.body);
-    for (var diaryJson in json) {
-      diaryList.add(Diary.fromJson(diaryJson));
-    }
-    return diaryList;
-  }
-  catch(error)
-  {
-    print('error : $error');
-  }
-  return [];
-}
-
-Map<DateTime, Diary> convertListToMap(List<Diary> diaryList) {
-  var returnMap = Map<DateTime, Diary>();
-  for (var diary in diaryList) {
-    var stringToDateTime = DateTime.parse(diary.toDate());
-    returnMap[stringToDateTime] = diary;
-    // print("------------");
-    // print(returnMap[stringToDateTime]);
-    // print("------------");
-  }
-  return returnMap;
-}
-
-Map<DateTime, Diary> eventSource = Map();
-
-LinkedHashMap<DateTime, Diary> events = LinkedHashMap(
-  equals: isSameDay,
-)..addAll(eventSource); 
-
-List<Diary?> getEventsForDay(DateTime day) {
-  return [events[DateTime.parse(DateFormat('yyyy-MM-dd').format(day))]].whereType<Diary>().toList();
 }
 
 // Widget _buildMissionContainer (int index) {

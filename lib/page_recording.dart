@@ -16,6 +16,7 @@ import 'dart:io';
 String globalUrl = "http://localhost:8080";
 // String globalUrl= 'http://172.10.5.90:443';
 String modelUrl = "http://172.10.9.25:80/";
+int selectedRadioIndex = 0;
 
 class RecordingPage extends StatefulWidget {
   RecordingPage({Key? key}) : super(key: key);
@@ -28,7 +29,6 @@ class _RecordingPageState extends State<RecordingPage> {
   final recorder = FlutterSoundRecorder();
   final ScrollController _scrollController = ScrollController();
   late int selectedButton = -1;
-  int selectedRadioIndex = 0;
   bool isRecorderReady = false;
   void toggleSelection(int buttonNumber) {
     if (selectedButton == buttonNumber) return;
@@ -243,7 +243,7 @@ class _RecordingPageState extends State<RecordingPage> {
                             // SizedBox(
                             //   height: 10,
                             // ),
-                            RadioButtonWidget1(selectedRadioIndex: selectedRadioIndex,),
+                            RadioButtonWidget1(),
                           ],
                         ),
                       ),
