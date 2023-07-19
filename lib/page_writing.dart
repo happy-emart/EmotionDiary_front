@@ -8,8 +8,9 @@ import 'widgets/get_jwt_token.dart';
 import 'tab_controller.dart';
 import 'main_sub.dart';
 
-String globalUrl = "http://localhost:8080";
-String modelUrl = "http://172.10.9.25:443/";
+// String globalUrl = "http://localhost:8080";
+String globalUrl= 'http://172.10.5.90:443';
+String modelUrl = "http://172.10.9.25:80/";
 
 class WritingPage extends StatefulWidget {
   int emotion;
@@ -215,16 +216,22 @@ class _WritingPageState extends State<WritingPage> {
                       ),
                       Column(
                         children: [
-                          TextField(
-                            controller: _diaryController,
-                            maxLines: null, // Allows the TextField to expand vertically as needed
-                            decoration: const InputDecoration(
-                              hintStyle: TextStyle(
-                                fontFamily: "mainfont",
-                                fontSize: 15,
-                              ),
-                              hintText: '여기에 일기를 써 주세요',
-                              border: OutlineInputBorder(),
+                          Form(
+                            child: Column(
+                              children: [
+                                TextField(
+                                  controller: _diaryController,
+                                  maxLines: null, // Allows the TextField to expand vertically as needed
+                                  decoration: const InputDecoration(
+                                    hintStyle: TextStyle(
+                                      fontFamily: "mainfont",
+                                      fontSize: 15,
+                                    ),
+                                    hintText: '여기에 일기를 써 주세요',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -253,22 +260,24 @@ class _WritingPageState extends State<WritingPage> {
                       ),
                       OutlinedButton(
                         onPressed: () async {
-                          var diary = _diaryController.text;
-                          // send 
-                          var body = {
-                            // 'id': id,
-                            'emotion': selectedButton,
-                            'text': diary,
-                            'weather': selectedButton,
-                            'writtenDate': DateFormat("yyyy-MM-dd").format(today),
-                          };
-                          await sendDiary(body);
-                          isDiaryWritten = true;
-                          // Navigator.pop(context);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => Controller()),
-                          );
+                          if (_diaryController.text.isNotEmpty) {
+                            var diary = _diaryController.text;
+                            // send 
+                            var body = {
+                              // 'id': id,
+                              'emotion': selectedButton,
+                              'text': diary,
+                              'weather': selectedButton,
+                              'writtenDate': DateFormat("yyyy-MM-dd").format(today),
+                            };
+                            await sendDiary(body);
+                            isDiaryWritten = true;
+                            // Navigator.pop(context);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => Controller()),
+                            );
+                          }
                         },
                         child: Text(
                           "작성 완료",
@@ -356,17 +365,22 @@ Future<void> sendDiary(Map<String, dynamic> body) async {
   String springUrl = "$globalUrl/sent_letters";
   String flaskUrl = modelUrl;
   
-  final request = Uri.parse(springUrl);
+  final requestSpring = Uri.parse(springUrl);
+  final requestFlask = Uri.parse(flaskUrl);
   final jwtToken = await getJwtToken();
-  final headers = <String, String> {
+  final headersSpring = <String, String> {
     'Content-Type': 'application/json; charset=UTF-8',
     'Authorization': 'Bearer $jwtToken'
   };
+  final headersFlask = <String, String> {
+    'Content-Type': 'application/json; charset=UTF-8',
+  };
   try
     {
-      final response = await http.post(request, headers: headers, body: json.encode(body));
-      print(json.encode(body));
-      print(response.body);
+      final responseSpring = await http.post(requestSpring, headers: headersSpring, body: json.encode(body));
+      final responseFlask = await http.post(requestFlask, headers: headersFlask, body: json.encode(body));
+      // print(json.encode(body));
+      print(responseFlask.body);
     }
   catch(error)
   {

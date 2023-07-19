@@ -5,9 +5,12 @@ import 'widgets/emoticon_face.dart';
 import 'widgets/weather_radio.dart';
 import 'package:http/http.dart' as http;
 import 'widgets/emotion_converter.dart';
+import 'package:emotion_diary/widgets/calendar.dart';
+import 'package:emotion_diary/widgets/diary.dart';
 
-String globalUrl = "http://localhost";
-String flaskUrl = "http://172.10.9.25:443/";
+// String globalUrl = "http://localhost";
+String globalUrl = 'http://172.10.5.90:443';
+String modelUrl = "http://172.10.9.25:80/";
 
 class ReadingPage extends StatefulWidget {
   DateTime writtenDate;
@@ -29,10 +32,9 @@ class _ReadingPageState extends State<ReadingPage> {
 
   @override
   Widget build(BuildContext context) {
-  
     var selectedDay = widget.writtenDate;
     var selectedDayString = DateFormat("yyyy년 MM월 dd일").format(selectedDay);
-
+    Diary? eventsForDay = getEventsForDay(widget.writtenDate).isNotEmpty ? getEventsForDay(widget.writtenDate)[0] : Diary(emotion: '100', weather: '100', diaryText: "일기를 쓰지 않은 날입니다.", writtenDate: "2001-01-01");
 
     return Scaffold(
       body: SafeArea(
@@ -51,36 +53,59 @@ class _ReadingPageState extends State<ReadingPage> {
                       ),
                       SizedBox(height: 15,),
                       Container(
-                        padding: EdgeInsets.all(10),
+                        alignment: Alignment.center,
+                        // height: 165,
+                        padding: EdgeInsets.all(15),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                            width: 2,
+                            width: 1,
                             color: Theme.of(context).colorScheme.onPrimary,
                           )
                         ),
-                        child: Column(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            Column(
                               children: [
                                 Text(
-                                      "오늘의 기분",
-                                      style: TextStyle(
-                                        fontFamily: "bookk",
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                // ,
-                              ]
+                                  "오늘의 기분",
+                                  style: TextStyle(
+                                    fontFamily: "bookk",
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                Text(
+                                  "오늘의 기분",
+                                  style: TextStyle(
+                                    fontFamily: "bookk",
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ],
                             ),
-                            SizedBox(
-                              height: 10,
+                            Column(
+                              children: [
+                                Text(
+                                  "날씨",
+                                  style: TextStyle(
+                                    fontFamily: "bookk",
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ],
+                              // 날씨 이미지
                             ),
-                          ],
+                          ]
                         ),
                       ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      // selecting weather
                       SizedBox(
                         height: 10,
                       ),
@@ -100,13 +125,13 @@ class _ReadingPageState extends State<ReadingPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                      "날씨",
-                                      style: TextStyle(
-                                        fontFamily: "bookk",
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 18,
-                                      ),
-                                    ),
+                                  "AI는 어떻게 생각했을까?",
+                                  style: TextStyle(
+                                    fontFamily: "bookk",
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 18,
+                                  ),
+                                ),
                                 // ,
                               ]
                             ),
@@ -211,10 +236,10 @@ class EmotionButtonScroll extends StatelessWidget {
 }
 
 void sendDiary(Map<String, dynamic> body) async {
-  // String Url = "$globalUrl/sent_letters";
-  String Url = flaskUrl;
+  String springUrl = "$globalUrl/sent_letters";
+  String flaskUrl = modelUrl;
   
-  final request = Uri.parse(Url);
+  final request = Uri.parse(springUrl);
   // final jwtToken = await getJwtToken();
   // final headers = <String, String> {
   //   'Content-Type': 'application/json; charset=UTF-8',

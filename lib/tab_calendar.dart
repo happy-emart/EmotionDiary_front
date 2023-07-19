@@ -14,7 +14,7 @@ class _CalendarPageState extends State<CalendarPage> {
   var yearNowString = new DateTime.now().year.toString();
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
-  Diary? eventsForDay;
+  Diary? eventsForDay = getEventsForDay(DateTime.now()).isNotEmpty ? getEventsForDay(DateTime.now())[0] : Diary(emotion: '100', weather: '100', diaryText: "일기를 쓰지 않은 날입니다.", writtenDate: "2001-01-01");
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class _CalendarPageState extends State<CalendarPage> {
                               setState(() {
                                 this.selectedDay = selectedDay;
                                 this.focusedDay = focusedDay;
-                                this.eventsForDay = getEventsForDay(selectedDay).isNotEmpty ? getEventsForDay(selectedDay)[0] : Diary(emotion: '100', weather: '100', diaryText: "일기를 쓰지 않은 날입니다.", writtenDate: "2001-01-01");
+                                eventsForDay = getEventsForDay(selectedDay).isNotEmpty ? getEventsForDay(selectedDay)[0] : null;
                                 }
                               );
                             },
@@ -74,7 +74,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       SizedBox(height: 15),
                       GestureDetector(
                         onTap: () {
-                          // if (getEventsForDay(selectedDay).isNotEmpty)
+                          if (getEventsForDay(selectedDay).isNotEmpty)
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -91,10 +91,11 @@ class _CalendarPageState extends State<CalendarPage> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(eventsForDay?.toString()??"엥"),
                               Text(eventsForDay?.toEmotion()??""),
-                              Text(eventsForDay?.toWeather()??""),
+                              Text(eventsForDay?.toWeather()??"일기를 쓰지 않은 날입니다"),
+                              Text(eventsForDay?.toString()??""),
                             ],
                           ),
                         ),

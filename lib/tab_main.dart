@@ -142,19 +142,18 @@ class _MainPageState extends State<MainPage> {
                             height: 20,
                           ),
                           Container(
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 165,
-                              padding: EdgeInsets.fromLTRB(5, 15, 5, 15),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  width: 1,
-                                  color: Theme.of(context).colorScheme.onPrimary,
-                                )
-                              ),
-                              child: isDiaryWritten ? emptyScroll : emotionScroll,
+                            alignment: Alignment.center,
+                            height: 165,
+                            padding: EdgeInsets.fromLTRB(5, 15, 5, 15),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                width: 1,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              )
                             ),
+                            // child: isDiaryWritten ? emptyScroll : emotionScroll,
+                            child: emotionScroll,
                           ),
                           SizedBox(height: 25,),
                           Container(

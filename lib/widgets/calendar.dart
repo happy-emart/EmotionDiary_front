@@ -10,7 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'get_jwt_token.dart';
 
-String baseUrl = 'http://localhost:8080';
+// String baseUrl = 'http://localhost:8080';
+String baseUrl = 'http://172.10.5.90:443';
 
 class TableCalendarScreen extends StatefulWidget {
   TableCalendarScreen({Key? key, required this.selectedDay, required this.onDaySelected, required this.focusedDay}) : super(key: key);
@@ -41,7 +42,8 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
           var list = await getDateEventMap(DateTime.now());
           var map = convertListToMap(list);
           events.addAll(map);
-          setState(() {}); // Trigger a rebuild after data is loaded
+          if(mounted)
+            setState(() {}); // Trigger a rebuild after data is loaded
         },
         onPageChanged: (date) async {
           var list = await getDateEventMap(date);

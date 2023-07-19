@@ -20,7 +20,7 @@ import 'package:table_calendar/table_calendar.dart';
 bool isDiaryWritten = false;
 int _selectedIndex = 0;
 
-void isDiaryWrittenInit() async {
+Future<void> isDiaryWrittenInit() async {
   var now = DateTime.now();
   var yesterday = DateTime.now().subtract(Duration(days: 1));
   var today = now.hour < 7 ? yesterday : now;
@@ -32,8 +32,9 @@ void isDiaryWrittenInit() async {
   var list = await getDateEventMap(today);
   var map = convertListToMap(list);
   events.addAll(map);
-  [events[DateTime.parse(DateFormat('yyyy-MM-dd').format(today))]].whereType<Diary>().toList()
+  [events[DateTime.parse(DateFormat('yyyy-MM-dd').format(today))]].whereType<Diary>().toList().isEmpty ? isDiaryWritten = false : isDiaryWritten = true;
 }
+
 class Controller extends StatefulWidget {
   const Controller({Key? key}) : super(key: key);
 
@@ -43,8 +44,6 @@ class Controller extends StatefulWidget {
 
 class _ControllerState extends State<Controller> {
   final PageController _pageController = PageController();
-
-  // isDiaryWritten;
 
   static List<Widget> _widgetOptions = <Widget>[
     MainPage(name: "영욱"),
